@@ -11,6 +11,7 @@ class SignInBody extends StatefulWidget {
 }
 
 class _SignInBodyState extends State<SignInBody> {
+  final _formkey = GlobalKey<FormState>();
   bool _isPasswordMasked = true;
   TextEditingController _emailcontroller = TextEditingController();
   TextEditingController _passwordcontroller = TextEditingController();
@@ -48,57 +49,67 @@ class _SignInBodyState extends State<SignInBody> {
               SizedBox(
                 height: screenHeight(context, 0.2),
               ),
-              TextFormField(
-                style: TextStyle(color: UiColors.color3),
-                controller: _emailcontroller,
-                decoration: buildInputDecoration(
-                  label: 'Email',
-                  picon: Icon(
-                    Icons.email,
-                    color: UiColors.color3,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: screenHeight(context, 0.02),
-              ),
-              TextFormField(
-                style: TextStyle(color: UiColors.color3),
-                controller: _passwordcontroller,
-                obscureText: _isPasswordMasked,
-                decoration: buildInputDecoration(
-                  label: 'Password',
-                  picon: Icon(
-                    Icons.lock,
-                    color: UiColors.color3,
-                  ),
-                  sicon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordMasked = !_isPasswordMasked;
-                      });
-                    },
-                    icon: Icon(
-                      _isPasswordMasked
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: UiColors.color3,
-                      size: 23.0,
+              Form(
+                key: _formkey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      style: TextStyle(color: UiColors.color3),
+                      keyboardType: TextInputType.emailAddress,
+                      controller: _emailcontroller,
+                      decoration: buildInputDecoration(
+                        label: 'Email',
+                        picon: Icon(
+                          Icons.email,
+                          color: UiColors.color3,
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(
+                      height: screenHeight(context, 0.02),
+                    ),
+                    TextFormField(
+                      style: TextStyle(color: UiColors.color3),
+                      controller: _passwordcontroller,
+                      obscureText: _isPasswordMasked,
+                      decoration: buildInputDecoration(
+                        label: 'Password',
+                        picon: Icon(
+                          Icons.lock,
+                          color: UiColors.color3,
+                        ),
+                        sicon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordMasked = !_isPasswordMasked;
+                            });
+                          },
+                          icon: Icon(
+                            _isPasswordMasked
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: UiColors.color3,
+                            size: 23.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: screenHeight(context, 0.02),
+                    ),
+                    ReusableButton(
+                      label: 'Sign In',
+                      onpress: () {},
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(
-                height: screenHeight(context, 0.02),
-              ),
-              ReusableButton(
-                label: 'Sign In',
-                onpress: () {},
               ),
               SizedBox(
                 height: screenHeight(context, 0.03),
               ),
-              SignInAnomymous(label: 'Skip Sign In',)
+              SignInAnomymous(
+                label: 'Skip Sign In',
+              )
             ],
           ),
         ),
@@ -106,5 +117,3 @@ class _SignInBodyState extends State<SignInBody> {
     );
   }
 }
-
-
