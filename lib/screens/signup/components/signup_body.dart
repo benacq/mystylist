@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_stylist/screens/reusablecomponents/anonymous_signin.dart';
 import 'package:my_stylist/screens/reusablecomponents/button.dart';
 import 'package:my_stylist/screens/reusablecomponents/input_decoration.dart';
+import 'package:my_stylist/services/signup_services.dart';
+import 'package:my_stylist/services/validation_services.dart';
 import 'package:my_stylist/utils/colors.dart';
 import 'package:my_stylist/utils/responsive.dart';
 
@@ -11,13 +13,8 @@ class SignUpBody extends StatefulWidget {
 }
 
 class _SignUpBodyState extends State<SignUpBody> {
-  final _formkey = GlobalKey<FormState>();
   bool _isPasswordMasked = true;
-  TextEditingController _emailcontroller = TextEditingController();
-  TextEditingController _passwordcontroller = TextEditingController();
-
-  String get _email => _emailcontroller.text;
-  String get _pass => _passwordcontroller.text;
+  SignUpService _signUpService = new SignUpService();
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +47,15 @@ class _SignUpBodyState extends State<SignUpBody> {
                 height: screenHeight(context, 0.2),
               ),
               Form(
-                key: _formkey,
+                key: SignUpService.signUpFormKey,
                 child: Column(
                   children: [
                     TextFormField(
+                      validator: (email) =>
+                          ValidationService.validateEmail(email),
                       style: TextStyle(color: UiColors.color3),
                       keyboardType: TextInputType.emailAddress,
-                      controller: _emailcontroller,
+                      onSaved: (email) => _signUpService.setEmail = email,
                       decoration: buildInputDecoration(
                         label: 'Email',
                         picon: Icon(
@@ -70,8 +69,11 @@ class _SignUpBodyState extends State<SignUpBody> {
                     ),
                     TextFormField(
                       style: TextStyle(color: UiColors.color3),
-                      controller: _passwordcontroller,
+                      validator: (password) =>
+                          ValidationService.validatePassword(password),
                       obscureText: _isPasswordMasked,
+                      onSaved: (password) =>
+                          _signUpService.setPassword = password,
                       decoration: buildInputDecoration(
                         label: 'Password',
                         picon: Icon(
@@ -99,7 +101,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                     ),
                     ReusableButton(
                       label: 'Sign Up',
-                      onpress: () {},
+                      onpress: () => _signUpService.onSignUp(),
                     ),
                   ],
                 ),

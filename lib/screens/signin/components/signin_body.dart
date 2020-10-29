@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_stylist/screens/reusablecomponents/anonymous_signin.dart';
 import 'package:my_stylist/screens/reusablecomponents/button.dart';
 import 'package:my_stylist/screens/reusablecomponents/input_decoration.dart';
+import 'package:my_stylist/services/signin_service.dart';
 import 'package:my_stylist/utils/colors.dart';
 import 'package:my_stylist/utils/responsive.dart';
 
@@ -11,13 +12,8 @@ class SignInBody extends StatefulWidget {
 }
 
 class _SignInBodyState extends State<SignInBody> {
-  final _formkey = GlobalKey<FormState>();
+  final SignInService _signInService = new SignInService();
   bool _isPasswordMasked = true;
-  TextEditingController _emailcontroller = TextEditingController();
-  TextEditingController _passwordcontroller = TextEditingController();
-
-  String get _email => _emailcontroller.text;
-  String get _pass => _passwordcontroller.text;
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +46,14 @@ class _SignInBodyState extends State<SignInBody> {
                 height: screenHeight(context, 0.2),
               ),
               Form(
-                key: _formkey,
+                key: SignInService.signInFormKey,
                 child: Column(
                   children: [
                     TextFormField(
                       style: TextStyle(color: UiColors.color3),
                       keyboardType: TextInputType.emailAddress,
-                      controller: _emailcontroller,
+                      validator: (email) =>
+                          email.isEmpty ? "Please enter your email" : null,
                       decoration: buildInputDecoration(
                         label: 'Email',
                         picon: Icon(
@@ -70,7 +67,9 @@ class _SignInBodyState extends State<SignInBody> {
                     ),
                     TextFormField(
                       style: TextStyle(color: UiColors.color3),
-                      controller: _passwordcontroller,
+                      validator: (password) => password.isEmpty
+                          ? "Please enter your password"
+                          : null,
                       obscureText: _isPasswordMasked,
                       decoration: buildInputDecoration(
                         label: 'Password',
@@ -99,7 +98,7 @@ class _SignInBodyState extends State<SignInBody> {
                     ),
                     ReusableButton(
                       label: 'Sign In',
-                      onpress: () {},
+                      onpress: () => _signInService.onSignIn(),
                     ),
                   ],
                 ),
