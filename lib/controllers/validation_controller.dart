@@ -1,11 +1,11 @@
 import 'dart:core';
-import 'package:email_validator/email_validator.dart';
+import 'package:get/get.dart';
 
 class ValidationService {
   static validateEmail(String email) {
     if (email.isEmpty) {
       return "Enter your email";
-    } else if (!EmailValidator.validate(email)) {
+    } else if (!GetUtils.isEmail(email)) {
       return "Enter a valid email";
     } else {
       return null;

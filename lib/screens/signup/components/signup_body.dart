@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:my_stylist/controllers/auth_controller.dart';
+import 'package:my_stylist/controllers/validation_controller.dart';
 import 'package:my_stylist/screens/reusablecomponents/anonymous_signin.dart';
 import 'package:my_stylist/screens/reusablecomponents/button.dart';
 import 'package:my_stylist/screens/reusablecomponents/input_decoration.dart';
-import 'package:my_stylist/services/signup_services.dart';
-import 'package:my_stylist/services/validation_services.dart';
 import 'package:my_stylist/utils/colors.dart';
 import 'package:my_stylist/utils/responsive.dart';
 
-class SignUpBody extends StatefulWidget {
-  @override
-  _SignUpBodyState createState() => _SignUpBodyState();
-}
-
-class _SignUpBodyState extends State<SignUpBody> {
-  bool _isPasswordMasked = true;
-  SignUpService _signUpService = new SignUpService();
+class SignUpBody extends GetWidget<AuthController> {
+  final bool _isPasswordMasked = true;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +42,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                 height: screenHeight(context, 0.2),
               ),
               Form(
-                key: SignUpService.signUpFormKey,
+                key: AuthController.signUpFormKey,
                 child: Column(
                   children: [
                     TextFormField(
@@ -55,7 +50,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                           ValidationService.validateEmail(email),
                       style: TextStyle(color: UiColors.color3),
                       keyboardType: TextInputType.emailAddress,
-                      onSaved: (email) => _signUpService.setEmail = email,
+                      onSaved: (email) => controller.setEmail = email,
                       decoration: buildInputDecoration(
                         label: 'Email',
                         picon: Icon(
@@ -72,8 +67,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                       validator: (password) =>
                           ValidationService.validatePassword(password),
                       obscureText: _isPasswordMasked,
-                      onSaved: (password) =>
-                          _signUpService.setPassword = password,
+                      onSaved: (password) => controller.setPassword = password,
                       decoration: buildInputDecoration(
                         label: 'Password',
                         picon: Icon(
@@ -82,9 +76,10 @@ class _SignUpBodyState extends State<SignUpBody> {
                         ),
                         sicon: IconButton(
                           onPressed: () {
-                            setState(() {
-                              _isPasswordMasked = !_isPasswordMasked;
-                            });
+                            print("MASKING PASSWORD");
+                            // setState(() {
+                            //   _isPasswordMasked = !_isPasswordMasked;
+                            // });
                           },
                           icon: Icon(
                             _isPasswordMasked
@@ -101,7 +96,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                     ),
                     ReusableButton(
                       label: 'Sign Up',
-                      onpress: () => _signUpService.onSignUp(),
+                      onpress: () => controller.onSignUp(),
                     ),
                   ],
                 ),
