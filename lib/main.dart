@@ -16,19 +16,12 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialBinding: AuthBinding(),
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Mystylist',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: AuthenticationWrapper(),
+      home: Landing(),
     );
-  }
-}
-
-class AuthenticationWrapper extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Landing();
   }
 }

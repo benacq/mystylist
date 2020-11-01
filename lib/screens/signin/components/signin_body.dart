@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:my_stylist/controllers/auth_controller.dart';
 import 'package:my_stylist/screens/reusablecomponents/anonymous_signin.dart';
@@ -7,17 +8,7 @@ import 'package:my_stylist/screens/reusablecomponents/input_decoration.dart';
 import 'package:my_stylist/utils/colors.dart';
 import 'package:my_stylist/utils/responsive.dart';
 
-// class SignInBody extends StatefulWidget {
-//   @override
-//   _SignInBodyState createState() => _SignInBodyState();
-// }
-
 class SignInBody extends GetWidget<AuthController> {
-  // final SignInController _signInService = new SignInController();
-  final _isPasswordMasked = true;
-  // String _email;
-  // String _password;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -69,36 +60,36 @@ class SignInBody extends GetWidget<AuthController> {
                     SizedBox(
                       height: screenHeight(context, 0.02),
                     ),
-                    TextFormField(
-                      style: TextStyle(color: UiColors.color3),
-                      validator: (password) => password.isEmpty
-                          ? "Please enter your password"
-                          : null,
-                      onSaved: (password) => controller.setPassword = password,
-                      obscureText: _isPasswordMasked,
-                      decoration: buildInputDecoration(
-                        label: 'Password',
-                        picon: Icon(
-                          Icons.lock,
-                          color: UiColors.color3,
-                        ),
-                        sicon: IconButton(
-                          onPressed: () {
-                            print("Mask password");
-                            // setState(() {
-                            //   _isPasswordMasked = !_isPasswordMasked;
-                            // });
-                          },
-                          icon: Icon(
-                            _isPasswordMasked
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: UiColors.color3,
-                            size: 23.0,
-                          ),
-                        ),
-                      ),
-                    ),
+                    GetBuilder<AuthController>(
+                        init: AuthController(),
+                        builder: (_) {
+                          return TextFormField(
+                            style: TextStyle(color: UiColors.color3),
+                            validator: (password) => password.isEmpty
+                                ? "Please enter your password"
+                                : null,
+                            onSaved: (password) =>
+                                controller.setPassword = password,
+                            obscureText: _.isPasswordMasked,
+                            decoration: buildInputDecoration(
+                              label: 'Password',
+                              picon: Icon(
+                                Icons.lock,
+                                color: UiColors.color3,
+                              ),
+                              sicon: IconButton(
+                                onPressed: () => _.togglePasswordMask(),
+                                icon: Icon(
+                                  _.isPasswordMasked
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: UiColors.color3,
+                                  size: 23.0,
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
                     SizedBox(
                       height: screenHeight(context, 0.02),
                     ),

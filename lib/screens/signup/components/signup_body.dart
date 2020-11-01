@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:my_stylist/controllers/auth_controller.dart';
 import 'package:my_stylist/controllers/validation_controller.dart';
@@ -9,7 +10,7 @@ import 'package:my_stylist/utils/colors.dart';
 import 'package:my_stylist/utils/responsive.dart';
 
 class SignUpBody extends GetWidget<AuthController> {
-  final bool _isPasswordMasked = true;
+  // final bool _isPasswordMasked = true;
 
   @override
   Widget build(BuildContext context) {
@@ -62,35 +63,35 @@ class SignUpBody extends GetWidget<AuthController> {
                     SizedBox(
                       height: screenHeight(context, 0.02),
                     ),
-                    TextFormField(
-                      style: TextStyle(color: UiColors.color3),
-                      validator: (password) =>
-                          ValidationService.validatePassword(password),
-                      obscureText: _isPasswordMasked,
-                      onSaved: (password) => controller.setPassword = password,
-                      decoration: buildInputDecoration(
-                        label: 'Password',
-                        picon: Icon(
-                          Icons.lock,
-                          color: UiColors.color3,
-                        ),
-                        sicon: IconButton(
-                          onPressed: () {
-                            print("MASKING PASSWORD");
-                            // setState(() {
-                            //   _isPasswordMasked = !_isPasswordMasked;
-                            // });
-                          },
-                          icon: Icon(
-                            _isPasswordMasked
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: UiColors.color3,
-                            size: 23.0,
-                          ),
-                        ),
-                      ),
-                    ),
+                    GetBuilder<AuthController>(
+                        init: AuthController(),
+                        builder: (_) {
+                          return TextFormField(
+                            style: TextStyle(color: UiColors.color3),
+                            validator: (password) =>
+                                ValidationService.validatePassword(password),
+                            obscureText: _.isPasswordMasked,
+                            onSaved: (password) =>
+                                controller.setPassword = password,
+                            decoration: buildInputDecoration(
+                              label: 'Password',
+                              picon: Icon(
+                                Icons.lock,
+                                color: UiColors.color3,
+                              ),
+                              sicon: IconButton(
+                                onPressed: () => _.togglePasswordMask(),
+                                icon: Icon(
+                                  _.isPasswordMasked
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: UiColors.color3,
+                                  size: 23.0,
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
                     SizedBox(
                       height: screenHeight(context, 0.02),
                     ),
