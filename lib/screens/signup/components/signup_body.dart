@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:my_stylist/controllers/auth_controller.dart';
+import 'package:my_stylist/controllers/validation_controller.dart';
 import 'package:my_stylist/screens/reusablecomponents/anonymous_signin.dart';
 import 'package:my_stylist/screens/reusablecomponents/button.dart';
 import 'package:my_stylist/screens/reusablecomponents/input_decoration.dart';
 import 'package:my_stylist/utils/colors.dart';
 import 'package:my_stylist/utils/responsive.dart';
 
-class SignUpBody extends StatefulWidget {
-  @override
-  _SignUpBodyState createState() => _SignUpBodyState();
-}
+class SignUpBody extends GetWidget<AuthController> {
+  // final bool _isPasswordMasked = true;
 
-class _SignUpBodyState extends State<SignUpBody> {
-  final _formkey = GlobalKey<FormState>();
-  bool _isPasswordMasked = true;
-  TextEditingController _emailcontroller = TextEditingController();
-  TextEditingController _passwordcontroller = TextEditingController();
-
-  String get _email => _emailcontroller.text;
-  String get _pass => _passwordcontroller.text;
+  final loader = SpinKitFadingFour(
+    color: Colors.blueAccent,
+    size: 35.0,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +49,15 @@ class _SignUpBodyState extends State<SignUpBody> {
                 height: screenHeight(context, 0.2),
               ),
               Form(
-                key: _formkey,
+                key: AuthController.signUpFormKey,
                 child: Column(
                   children: [
                     TextFormField(
+                      validator: (email) =>
+                          ValidationService.validateEmail(email),
                       style: TextStyle(color: UiColors.color3),
                       keyboardType: TextInputType.emailAddress,
-                      controller: _emailcontroller,
+                      onSaved: (email) => controller.setEmail = email,
                       decoration: buildInputDecoration(
                         label: 'Email',
                         picon: Icon(
@@ -68,39 +69,46 @@ class _SignUpBodyState extends State<SignUpBody> {
                     SizedBox(
                       height: screenHeight(context, 0.02),
                     ),
-                    TextFormField(
-                      style: TextStyle(color: UiColors.color3),
-                      controller: _passwordcontroller,
-                      obscureText: _isPasswordMasked,
-                      decoration: buildInputDecoration(
-                        label: 'Password',
-                        picon: Icon(
-                          Icons.lock,
-                          color: UiColors.color3,
-                        ),
-                        sicon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _isPasswordMasked = !_isPasswordMasked;
-                            });
-                          },
-                          icon: Icon(
-                            _isPasswordMasked
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: UiColors.color3,
-                            size: 23.0,
-                          ),
-                        ),
-                      ),
-                    ),
+                    GetBuilder<AuthController>(
+                        init: AuthController(),
+                        builder: (_) {
+                          return TextFormField(
+                            style: TextStyle(color: UiColors.color3),
+                            validator: (password) =>
+                                ValidationService.validatePassword(password),
+                            obscureText: _.isPasswordMasked,
+                            onSaved: (password) =>
+                                controller.setPassword = password,
+                            decoration: buildInputDecoration(
+                              label: 'Password',
+                              picon: Icon(
+                                Icons.lock,
+                                color: UiColors.color3,
+                              ),
+                              sicon: IconButton(
+                                onPressed: () => _.togglePasswordMask(),
+                                icon: Icon(
+                                  _.isPasswordMasked
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: UiColors.color3,
+                                  size: 23.0,
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
                     SizedBox(
                       height: screenHeight(context, 0.02),
                     ),
-                    ReusableButton(
-                      label: 'Sign Up',
-                      onpress: () {},
-                    ),
+                    GetBuilder<AuthController>(
+                        init: AuthController(),
+                        builder: (_) {
+                          return ReusableButton(
+                            label: _.isLoading ? loader : Text('Sign Up'),
+                            onpress: () => controller.onSignUp(),
+                          );
+                        }),
                   ],
                 ),
               ),

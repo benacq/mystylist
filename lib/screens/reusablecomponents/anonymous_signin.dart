@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_stylist/controllers/auth_controller.dart';
 import 'package:my_stylist/utils/colors.dart';
 
 class SignInAnomymous extends StatelessWidget {
@@ -8,7 +9,7 @@ class SignInAnomymous extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => new AuthController().onSignInAnon(),
       child: Center(
         child: Text(
           label,

@@ -3,7 +3,7 @@ import 'package:my_stylist/utils/responsive.dart';
 
 class ReusableButton extends StatelessWidget {
   final Function onpress;
-  final String label;
+  final Widget label;
   const ReusableButton({this.label, this.onpress});
 
   @override
@@ -16,7 +16,7 @@ class ReusableButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(6),
         ),
-        child: Text(label),
+        child: label,
       ),
     );
   }
