@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:my_stylist/controllers/auth_controller.dart';
@@ -11,6 +12,11 @@ import 'package:my_stylist/utils/responsive.dart';
 
 class SignUpBody extends GetWidget<AuthController> {
   // final bool _isPasswordMasked = true;
+
+  final loader = SpinKitFadingFour(
+    color: Colors.blueAccent,
+    size: 35.0,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -95,10 +101,14 @@ class SignUpBody extends GetWidget<AuthController> {
                     SizedBox(
                       height: screenHeight(context, 0.02),
                     ),
-                    ReusableButton(
-                      label: 'Sign Up',
-                      onpress: () => controller.onSignUp(),
-                    ),
+                    GetBuilder<AuthController>(
+                        init: AuthController(),
+                        builder: (_) {
+                          return ReusableButton(
+                            label: _.isLoading ? loader : Text('Sign Up'),
+                            onpress: () => controller.onSignUp(),
+                          );
+                        }),
                   ],
                 ),
               ),

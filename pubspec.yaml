@@ -29,6 +29,7 @@ dependencies:
   firebase_core: ^0.5.0+1
   cloud_firestore: ^0.14.2
   hive: ^1.4.4+1
+  flutter_spinkit: ^4.1.2+1
   # file_picker: ^2.0.8
 
 

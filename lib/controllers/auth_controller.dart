@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +17,16 @@ class AuthController extends GetxController {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection("Users");
 
-  bool _isPasswordMasked = true;
   Rx<User> _firebaseUser = Rx<User>();
   String _email;
   String _password;
+  bool _isPasswordMasked = true;
+  bool _isLoading = false;
 
   String get email => _email;
   String get pass => _password;
   bool get isPasswordMasked => _isPasswordMasked;
+  bool get isLoading => _isLoading;
 
   User get user => _firebaseUser?.value;
 
@@ -61,10 +65,21 @@ class AuthController extends GetxController {
     }
     signInFormKey.currentState.save();
     try {
+      _isLoading = true;
+      update();
       await _firebaseAuth
           .signInWithEmailAndPassword(email: _email, password: _password)
-          .then((value) => Get.offAll(CustomerHome()));
+          .then((value) =>
+              {_isLoading = false, update(), Get.offAll(CustomerHome())})
+          .timeout(new Duration(seconds: 8));
+    } on TimeoutException catch (e) {
+      print("::::: ${e.message} ");
+      errorSnackBar(
+          title: "REQUEST TIMEOUT",
+          message: "Please make sure you have a stable internet connection");
     } on FirebaseAuthException catch (e) {
+      _isLoading = false;
+      update();
       print("${e.code} ::::: ${e.message} ");
       switch (e.code) {
         case "user-not-found":
@@ -78,8 +93,15 @@ class AuthController extends GetxController {
               title: "INCORRECT CREDENTIALS",
               message: "Your email or password is incorrect");
           break;
+
+        case "too-many-requests":
+          errorSnackBar(
+              title: "TOO MANY REQUESTS",
+              message:
+                  "We have blocked all requests from this device due to unusual activity. Try again later.");
+          break;
         default:
-          errorSnackBar(title: "ERROR", message: e.code);
+          errorSnackBar(title: "ERROR", message: e.message);
       }
     }
   }
@@ -90,21 +112,36 @@ class AuthController extends GetxController {
     }
     signUpFormKey.currentState.save();
     try {
+      _isLoading = true;
+      update();
       await _firebaseAuth
           .createUserWithEmailAndPassword(email: _email, password: _password)
           .then((newUser) {
-        userCollection
-            .doc(newUser.user.uid)
-            .set({"email": _email}).then((value) => Get.offAll(CustomerHome()));
-      });
+        userCollection.doc(newUser.user.uid).set({"email": _email}).then(
+            (value) =>
+                {_isLoading = false, update(), Get.offAll(CustomerHome())});
+      }).timeout(new Duration(seconds: 8));
+    } on TimeoutException catch (e) {
+      errorSnackBar(
+          title: "REQUEST TIMEOUT",
+          message: "Please make sure you have a stable internet connection");
     } on FirebaseAuthException catch (e) {
+      _isLoading = false;
+      update();
       print("${e.code} ::::: ${e.message} ");
+      if (e.code == "too-many-requests") {
+        errorSnackBar(
+            title: "Too MANY REQUESTS",
+            message:
+                "We have blocked all requests from this device due to unusual activity. Try again later.");
+        return;
+      }
       errorSnackBar(title: "ERROR", message: e.message);
     }
   }
 
   void onSignInAnon() {
-    print("Anonymouse user");
+    print("Anonymous user");
   }
 
   static void signOut() {
