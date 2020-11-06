@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import '../utils/message_consts.dart' as Constants;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -75,8 +75,7 @@ class AuthController extends GetxController {
     } on TimeoutException catch (e) {
       print("::::: ${e.message} ");
       errorSnackBar(
-          title: "REQUEST TIMEOUT",
-          message: "Please make sure you have a stable internet connection");
+          title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MESSAGE);
     } on FirebaseAuthException catch (e) {
       _isLoading = false;
       update();
@@ -85,21 +84,27 @@ class AuthController extends GetxController {
         case "user-not-found":
           errorSnackBar(
               title: "USER NOT FOUND",
-              message:
-                  "This credentials do not match with any user in our records");
+              message: Constants.USER_NOT_FOUND_MESSAGE);
           break;
+
         case "wrong-password":
           errorSnackBar(
               title: "INCORRECT CREDENTIALS",
-              message: "Your email or password is incorrect");
+              message: Constants.WRONG_CREDENTIALS_MESSAGE);
           break;
 
         case "too-many-requests":
           errorSnackBar(
-              title: "TOO MANY REQUESTS",
-              message:
-                  "We have blocked all requests from this device due to unusual activity. Try again later.");
+              title: Constants.TOO_MANY_REQUESTS_TITLE,
+              message: Constants.TOO_MANY_REQUESTS_MESSAGE);
           break;
+
+        case "unknown":
+          errorSnackBar(
+              title: Constants.NO_CONNECTION_TITLE,
+              message: Constants.NO_CONNECTION_MESSAGE);
+          break;
+
         default:
           errorSnackBar(title: "ERROR", message: e.message);
       }
@@ -121,22 +126,30 @@ class AuthController extends GetxController {
             (value) =>
                 {_isLoading = false, update(), Get.offAll(CustomerHome())});
       }).timeout(new Duration(seconds: 8));
-    } on TimeoutException catch (e) {
+    } on TimeoutException catch (_) {
       errorSnackBar(
-          title: "REQUEST TIMEOUT",
-          message: "Please make sure you have a stable internet connection");
+          title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MESSAGE);
     } on FirebaseAuthException catch (e) {
       _isLoading = false;
       update();
       print("${e.code} ::::: ${e.message} ");
-      if (e.code == "too-many-requests") {
-        errorSnackBar(
-            title: "Too MANY REQUESTS",
-            message:
-                "We have blocked all requests from this device due to unusual activity. Try again later.");
-        return;
+
+      switch (e.code) {
+        case "unknown":
+          errorSnackBar(
+              title: Constants.NO_CONNECTION_TITLE,
+              message: Constants.NO_CONNECTION_MESSAGE);
+          break;
+
+        case "too-many-requests":
+          errorSnackBar(
+              title: Constants.TOO_MANY_REQUESTS_TITLE,
+              message: Constants.TOO_MANY_REQUESTS_MESSAGE);
+          break;
+
+        default:
+          errorSnackBar(title: "ERROR", message: e.message);
       }
-      errorSnackBar(title: "ERROR", message: e.message);
     }
   }
 
