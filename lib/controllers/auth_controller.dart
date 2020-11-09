@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:my_stylist/screens/onboarding/onboarding.dart';
+
 import '../utils/message_consts.dart' as Constants;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -70,7 +72,7 @@ class AuthController extends GetxController {
       await _firebaseAuth
           .signInWithEmailAndPassword(email: _email, password: _password)
           .then((value) =>
-              {_isLoading = false, update(), Get.offAll(CustomerHome())})
+              {_isLoading = false, update(), Get.offAll(OnboardingScreen())})
           .timeout(new Duration(seconds: 8));
     } on TimeoutException catch (e) {
       print("::::: ${e.message} ");
@@ -124,7 +126,7 @@ class AuthController extends GetxController {
           .then((newUser) {
         userCollection.doc(newUser.user.uid).set({"email": _email}).then(
             (value) =>
-                {_isLoading = false, update(), Get.offAll(CustomerHome())});
+                {_isLoading = false, update(), Get.offAll(OnboardingScreen())});
       }).timeout(new Duration(seconds: 8));
     } on TimeoutException catch (_) {
       errorSnackBar(
