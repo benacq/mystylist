@@ -21,4 +21,21 @@ class ValidationService {
       return null;
     }
   }
+
+  static validatePhone(String phone) {
+    if (!GetUtils.isPhoneNumber(phone)) {
+      return "Enter a valid phone number";
+    } else {
+      return null;
+    }
+  }
+
+  static validateLocation(String location) {
+    if (location.isEmpty) {
+      return "Please enter your location";
+    } else if (location.isNum) {
+      return "Please enter a valid location";
+    }
+    return null;
+  }
 }

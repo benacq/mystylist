@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_stylist/controllers/bindings/auth_binding.dart';
 import 'package:my_stylist/screens/landing/landing.dart';
+import 'package:my_stylist/screens/onboarding/onboarding.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Landing(),
+      // home: Landing(),
+      home: OnboardingScreen(),
     );
   }
 }

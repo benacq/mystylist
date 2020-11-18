@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/state_manager.dart';
-import 'package:my_stylist/screens/customers/home/customer_home.dart';
 import 'package:my_stylist/screens/signin/sign_in.dart';
 
 class AuthController extends GetxController {
@@ -73,7 +72,7 @@ class AuthController extends GetxController {
           .signInWithEmailAndPassword(email: _email, password: _password)
           .then((value) =>
               {_isLoading = false, update(), Get.offAll(OnboardingScreen())})
-          .timeout(new Duration(seconds: 8));
+          .timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
     } on TimeoutException catch (e) {
       print("::::: ${e.message} ");
       errorSnackBar(
@@ -127,7 +126,7 @@ class AuthController extends GetxController {
         userCollection.doc(newUser.user.uid).set({"email": _email}).then(
             (value) =>
                 {_isLoading = false, update(), Get.offAll(OnboardingScreen())});
-      }).timeout(new Duration(seconds: 8));
+      }).timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
     } on TimeoutException catch (_) {
       errorSnackBar(
           title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MESSAGE);

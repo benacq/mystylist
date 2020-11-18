@@ -1,5 +1,7 @@
 library constants;
 
+const int TIMEOUT_SECS = 8;
+
 const String SUCCESS_MESSAGE = " You will be contacted by us very soon.";
 
 const String TIMEOUT_MESSAGE =
