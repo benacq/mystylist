@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:my_stylist/screens/customers/home/customer_home.dart';
 import 'package:my_stylist/screens/onboarding/onboarding.dart';
+import 'package:my_stylist/screens/stylist/home/stylist_home.dart';
 
 import '../utils/message_consts.dart' as Constants;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -60,6 +62,16 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<dynamic> isOnboardingComplete(String uid) async {
+    return userCollection.doc(uid).get().then((document) {
+      if (document.data().containsKey("account_type")) {
+        return document.get("account_type");
+      } else {
+        return false;
+      }
+    });
+  }
+
   void onSignIn() async {
     if (!signInFormKey.currentState.validate()) {
       return;
@@ -70,9 +82,28 @@ class AuthController extends GetxController {
       update();
       await _firebaseAuth
           .signInWithEmailAndPassword(email: _email, password: _password)
-          .then((value) =>
-              {_isLoading = false, update(), Get.offAll(OnboardingScreen())})
-          .timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
+          .then((userData) async {
+        // Check if user has filled onboarding already before redirecting
+        await AuthController()
+            .isOnboardingComplete(userData.user.uid)
+            .then((status) {
+          _isLoading = false;
+          update();
+          if (status == "stylist") {
+            Get.offAll(StylistHome());
+          } else if (status == "customer") {
+            Get.offAll(CustomerHome());
+          } else {
+            Get.offAll(OnboardingScreen());
+          }
+        }).catchError((error) {
+          _isLoading = false;
+          update();
+          errorSnackBar(
+              title: "Error",
+              message: "Something went wrong, please try again later");
+        });
+      }).timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
     } on TimeoutException catch (e) {
       print("::::: ${e.message} ");
       errorSnackBar(

@@ -9,7 +9,7 @@ class CustomerHome extends StatelessWidget {
         child: RaisedButton(
           onPressed: () => AuthController.signOut(),
           child: Text(
-            "Sign Out",
+            "Sign Out Customer",
             style: TextStyle(color: Colors.white),
           ),
           color: Colors.blueAccent,
