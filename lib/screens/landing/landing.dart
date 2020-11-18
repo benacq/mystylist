@@ -33,8 +33,10 @@ class Landing extends GetWidget<AuthController> {
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   print(snapshot.data);
-                  return Center(
-                    child: Text("Loading..."),
+                  return Scaffold(
+                    body: Center(
+                      child: Text("Loading..."),
+                    ),
                   );
                 } else {
                   return checkAccountType(snapshot.data);
