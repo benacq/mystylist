@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:my_stylist/controllers/auth_controller.dart';
 import 'package:my_stylist/controllers/onboarding_controller.dart';
+import 'package:my_stylist/screens/customers/customer_navigation.dart';
 import 'package:my_stylist/screens/customers/home/customer_home.dart';
 import 'package:my_stylist/screens/landing/components/l_body.dart';
 import 'package:my_stylist/screens/onboarding/onboarding.dart';
@@ -66,7 +67,7 @@ class Landing extends GetWidget<AuthController> {
     if (status == Constants.USER_ACCOUNT_BUSINESS) {
       return StylistHome();
     } else if (status == Constants.USER_ACCOUNT_CUSTOMER) {
-      return CustomerHome();
+      return CustomerNavigation();
     } else {
       return OnboardingScreen();
     }

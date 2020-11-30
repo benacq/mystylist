@@ -7,8 +7,9 @@ import 'package:my_stylist/controllers/onboarding_controller.dart';
 import 'package:my_stylist/screens/onboarding/components/pages.dart';
 import 'package:my_stylist/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../utils/colors.dart';
+import '../../utils/colors.dart';
 import 'components/onboarding_progress_indicator.dart';
-import '../../utils/message_consts.dart' as Constants;
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -49,7 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         opacity: 0.7,
         child: SafeArea(
           child: Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: UiColors.color2,
             body: FutureBuilder<SharedPreferences>(
                 future: _onboardingController.initialPreference(),
                 builder: (context, snapshot) {
@@ -135,8 +136,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                               'Back',
                                               style: GoogleFonts.lato(
                                                 textStyle: TextStyle(
-                                                    fontWeight: FontWeight.w900,
-                                                    fontSize: 16),
+                                                  fontWeight: FontWeight.w900,
+                                                  fontSize: 16,
+                                                  color: UiColors.color3,
+                                                ),
                                               ),
                                             ),
                                           ),
