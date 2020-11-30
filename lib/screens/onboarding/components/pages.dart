@@ -9,6 +9,8 @@ import 'package:my_stylist/screens/reusablecomponents/label_seperator.dart';
 import 'package:my_stylist/screens/reusablecomponents/textbox_seperator.dart';
 import 'package:my_stylist/screens/reusablecomponents/txt_decoration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../utils/colors.dart';
+import '../../../utils/colors.dart';
 import '../../../utils/message_consts.dart' as Constants;
 
 import 'package:my_stylist/utils/responsive.dart';
@@ -43,7 +45,7 @@ class OnboardingPageView extends StatelessWidget {
                     'Welcome',
                     style: GoogleFonts.lato(
                       textStyle: TextStyle(
-                        color: Color(0xff000000),
+                        color: UiColors.color3,
                         fontWeight: FontWeight.w700,
                         fontSize: 28.0,
                       ),
@@ -60,6 +62,7 @@ class OnboardingPageView extends StatelessWidget {
                   Form(
                     key: OnboardingController.pv1FormKey,
                     child: TextFormField(
+                      style: TextStyle(color: UiColors.color3),
                       onChanged: (fullName) => prefs.setString(
                           Constants.PREF_KEY_FULLNAME, fullName),
                       initialValue: pageTracker.userFullName,
@@ -95,6 +98,7 @@ class OnboardingPageView extends StatelessWidget {
                   ),
                   GetBuilder<OnboardingController>(builder: (pageTracker) {
                     return DropdownButtonFormField(
+                      style: TextStyle(color: UiColors.color3),
                       value: pageTracker.accountType,
                       onChanged: (accountType) {
                         prefs.setString(
@@ -137,6 +141,7 @@ class OnboardingPageView extends StatelessWidget {
                               ),
                               LabelSeperator(),
                               TextFormField(
+                                style: TextStyle(color: UiColors.color3),
                                 onChanged: (custContact) => prefs.setString(
                                     Constants.PREF_KEY_CUST_CONTACT,
                                     custContact),
@@ -157,6 +162,7 @@ class OnboardingPageView extends StatelessWidget {
                               ),
                               LabelSeperator(),
                               TextFormField(
+                                style: TextStyle(color: UiColors.color3),
                                 onChanged: (custLocation) => prefs.setString(
                                     Constants.PREF_KEY_CUST_LOCATION,
                                     custLocation),
@@ -196,6 +202,7 @@ class OnboardingPageView extends StatelessWidget {
                               ),
                               LabelSeperator(),
                               TextFormField(
+                                style: TextStyle(color: UiColors.color3),
                                 onChanged: (businessName) => prefs.setString(
                                     Constants.PREF_KEY_BUSS_NAME, businessName),
                                 initialValue: pageTracker.businessName,
@@ -215,6 +222,7 @@ class OnboardingPageView extends StatelessWidget {
                               ),
                               LabelSeperator(),
                               TextFormField(
+                                style: TextStyle(color: UiColors.color3),
                                 onChanged: (businessContact) => prefs.setString(
                                     Constants.PREF_KEY_BUSS_CONTACT,
                                     businessContact),
@@ -235,6 +243,7 @@ class OnboardingPageView extends StatelessWidget {
                               ),
                               LabelSeperator(),
                               TextFormField(
+                                style: TextStyle(color: UiColors.color3),
                                 onChanged: (location) => prefs.setString(
                                     Constants.PREF_KEY_BUSS_LOCATION, location),
                                 initialValue: pageTracker.businessLocation,
