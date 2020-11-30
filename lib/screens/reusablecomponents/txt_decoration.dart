@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/colors.dart';
+
 InputDecoration textInputDecoration({
   String hint,
   Icon picon,
@@ -13,31 +15,31 @@ InputDecoration textInputDecoration({
     prefixIcon: picon,
     suffixIcon: sicon,
     labelStyle: TextStyle(color: Color(0xff9A9A9A)),
-    filled: fill,
-    fillColor: fillcolor,
+    filled: true,
+    fillColor: UiColors.color1,
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(8)),
+      borderRadius: BorderRadius.all(Radius.circular(15)),
       borderSide: BorderSide(
         width: 0.6,
-        color: Color(0xffE3E3E3),
+        color: UiColors.color1,
       ),
     ),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(8)),
+      borderRadius: BorderRadius.all(Radius.circular(15)),
       borderSide: BorderSide(
         width: 1,
-        color: Color(0xffE3E3E3),
+        color: UiColors.color1,
       ),
     ),
     focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(8)),
+      borderRadius: BorderRadius.all(Radius.circular(15)),
       borderSide: BorderSide(
         width: 1,
-        color: Color(0xffE3E3E3),
+        color: UiColors.color1,
       ),
     ),
     errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(8)),
+      borderRadius: BorderRadius.all(Radius.circular(15)),
       borderSide: BorderSide(
         width: 1,
         color: Colors.red,

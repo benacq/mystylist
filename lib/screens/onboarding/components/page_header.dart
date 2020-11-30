@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../utils/colors.dart';
+
 class OnboardingHeader extends StatelessWidget {
   final String txt;
   const OnboardingHeader({
@@ -14,7 +16,7 @@ class OnboardingHeader extends StatelessWidget {
       txt,
       style: GoogleFonts.lato(
         textStyle: TextStyle(
-          color: Color(0xFF7B7B7B),
+          color: UiColors.color5,
           fontWeight: FontWeight.w400,
           fontSize: 17.0,
         ),
