@@ -175,9 +175,9 @@ class OnboardingController extends GetxController {
 
       if (accountType == "I am a Beautician") {
         // User is a beautician
-        createBusiness().then((value) => removePreferences());
+        createBusiness().whenComplete(() => removePreferences());
       } else {
-        createCustomer().then((value) => removePreferences());
+        createCustomer().whenComplete(() => removePreferences());
         // User is a customer
       }
     }
@@ -193,7 +193,7 @@ class OnboardingController extends GetxController {
         "account_type": "business",
         "contact": _businessContact,
         "location": _businessLocation,
-      }).then((_) {
+      }).whenComplete(() {
         _isLoading = false;
         update();
         Get.offAll(StylistHome());
@@ -220,7 +220,7 @@ class OnboardingController extends GetxController {
         "account_type": "customer",
         "contact": _customerContact,
         "location": _customerLocation,
-      }).then((_) {
+      }).whenComplete(() {
         _isLoading = false;
         update();
         Get.offAll(CustomerHome());

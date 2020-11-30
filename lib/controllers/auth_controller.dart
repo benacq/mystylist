@@ -153,8 +153,9 @@ class AuthController extends GetxController {
       await _firebaseAuth
           .createUserWithEmailAndPassword(email: _email, password: _password)
           .then((newUser) {
-        userCollection.doc(newUser.user.uid).set({"email": _email}).then(
-            (value) =>
+        userCollection
+            .doc(newUser.user.uid)
+            .set({"email": _email}).whenComplete(() =>
                 {_isLoading = false, update(), Get.offAll(OnboardingScreen())});
       }).timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
     } on TimeoutException catch (_) {
