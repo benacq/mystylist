@@ -1,17 +1,30 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/route_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/message_consts.dart' as Constants;
 import 'package:my_stylist/screens/customers/home/customer_home.dart';
-import 'package:my_stylist/screens/onboarding/components/onboarding_progress_indicator.dart';
 import 'package:my_stylist/screens/stylist/home/stylist_home.dart';
 
 class OnboardingController extends GetxController {
   static final GlobalKey<FormState> pv1FormKey = GlobalKey<FormState>();
   static final GlobalKey<FormState> pv2FormKey = GlobalKey<FormState>();
-  // static final GlobalKey<FormState> pv3FormKey = GlobalKey<FormState>();
+  CollectionReference userCollection =
+      FirebaseFirestore.instance.collection("Users");
+  User user = FirebaseAuth.instance.currentUser;
 
   static final PageController pageController = PageController(initialPage: 0);
   int _currentPage = 0;
+
+  static final errorSnackBar = ({String title, String message}) => Get.snackbar(
+      title, message,
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.white,
+      colorText: Color.fromRGBO(252, 35, 79, 1));
 
   String _userFullName;
   String _accountType;
@@ -93,7 +106,19 @@ class OnboardingController extends GetxController {
     return;
   }
 
-  void processFirstPage() {
+  Future<void> initialStatePreference() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    _userFullName = _prefs.getString(Constants.PREF_KEY_FULLNAME);
+    print("USER FULLNAME: $_userFullName");
+    _accountType = _prefs.getString(Constants.PREF_KEY_ACC_TYPE);
+    _customerContact = _prefs.getString(Constants.PREF_KEY_CUST_CONTACT);
+    _customerLocation = _prefs.getString(Constants.PREF_KEY_CUST_LOCATION);
+    _businessName = _prefs.getString(Constants.PREF_KEY_BUSS_NAME);
+    _businessContact = _prefs.getString(Constants.PREF_KEY_BUSS_CONTACT);
+    _businessLocation = _prefs.getString(Constants.PREF_KEY_BUSS_LOCATION);
+  }
+
+  void validatePageViewFirstPage() {
     if (pv1FormKey.currentState.validate()) {
       pv1FormKey.currentState.save();
       pageController.nextPage(
@@ -103,7 +128,7 @@ class OnboardingController extends GetxController {
     }
   }
 
-  void processLastPage() {
+  void validatePageViewLastPage() {
     if (pv2FormKey.currentState.validate()) {
       pv2FormKey.currentState.save();
 
@@ -114,16 +139,49 @@ class OnboardingController extends GetxController {
         createCustomer();
         // User is a customer
       }
-      //Delete shared preference for user fields
-      //Set preference for successful onboarding
     }
   }
 
-  void createBusiness() {
-    Get.offAll(StylistHome());
+  Future<void> createBusiness() async {
+    try {
+      await userCollection
+          .doc(user.uid)
+          .update({
+            "user_fullname": _userFullName,
+            "business_name": _businessName,
+            "account_type": "business",
+            "contact": _businessContact,
+            "location": _businessLocation,
+          })
+          .then((_) => Get.offAll(StylistHome()))
+          .catchError((error) => errorSnackBar(
+              title: "Error",
+              message: "Something went wrong, please try again"))
+          .timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
+    } on TimeoutException catch (_) {
+      errorSnackBar(
+          title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MESSAGE);
+    }
   }
 
-  void createCustomer() {
-    Get.offAll(CustomerHome());
+  Future<void> createCustomer() async {
+    try {
+      await userCollection
+          .doc(user.uid)
+          .update({
+            "user_fullname": _userFullName,
+            "account_type": "customer",
+            "contact": _customerContact,
+            "location": _customerLocation,
+          })
+          .then((_) => Get.offAll(CustomerHome()))
+          .catchError((error) => errorSnackBar(
+              title: "Error",
+              message: "Something went wrong, please try again"))
+          .timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
+    } on TimeoutException catch (_) {
+      errorSnackBar(
+          title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MESSAGE);
+    }
   }
 }

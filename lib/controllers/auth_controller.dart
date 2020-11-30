@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:my_stylist/screens/customers/home/customer_home.dart';
 import 'package:my_stylist/screens/onboarding/onboarding.dart';
 import 'package:my_stylist/screens/stylist/home/stylist_home.dart';
-
 import '../utils/message_consts.dart' as Constants;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,7 +32,7 @@ class AuthController extends GetxController {
 
   User get user => _firebaseUser?.value;
 
-  final errorSnackBar = ({String title, String message}) => Get.snackbar(
+  static final errorSnackBar = ({String title, String message}) => Get.snackbar(
       title, message,
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.white,
@@ -89,9 +88,9 @@ class AuthController extends GetxController {
             .then((status) {
           _isLoading = false;
           update();
-          if (status == "stylist") {
+          if (status == Constants.USER_ACCOUNT_BUSINESS) {
             Get.offAll(StylistHome());
-          } else if (status == "customer") {
+          } else if (status == Constants.USER_ACCOUNT_CUSTOMER) {
             Get.offAll(CustomerHome());
           } else {
             Get.offAll(OnboardingScreen());

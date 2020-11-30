@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_stylist/controllers/onboarding_controller.dart';
-import 'package:my_stylist/screens/customers/home/customer_home.dart';
 import 'package:my_stylist/screens/onboarding/components/pages.dart';
 import 'package:my_stylist/utils/responsive.dart';
 import 'components/onboarding_progress_indicator.dart';
@@ -17,7 +16,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       Get.put(OnboardingController());
 
   final int _numPages = 3;
-  // final PageController _pageController = PageController(initialPage: 0);
 
   List<Widget> _buildPageIndicator() {
     List<Widget> list = [];
@@ -27,6 +25,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       }));
     }
     return list;
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -41,32 +44,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  height: screenHeight(context, 0.74),
-                  child:
-                      GetBuilder<OnboardingController>(builder: (pageTracker) {
-                    return PageView(
-                      physics: NeverScrollableScrollPhysics(),
-                      controller: OnboardingController.pageController,
-                      onPageChanged: (int page) {
-                        pageTracker.setCurrentPage = page;
-                      },
-                      children: <Widget>[
-                        NamePage(),
-                        AccountTypePage(name: pageTracker.userFullName),
-                        Column(
-                          children: [
-                            _onboardingController.accountType ==
-                                    'I am a Beautician'
-                                ? BusinessInfoPage(
-                                    name: pageTracker.businessName)
-                                : CustomerInfoPage(
-                                    name: pageTracker.userFullName)
-                          ],
-                        ),
-                      ],
-                    );
-                  }),
-                ),
+                    height: screenHeight(context, 0.74),
+                    child: OnboardingPageView()),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: _buildPageIndicator(),
@@ -76,8 +55,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ? Padding(
                           padding: const EdgeInsets.all(35.0),
                           child: FlatButton(
-                            onPressed: () =>
-                                _onboardingController.processFirstPage(),
+                            onPressed: () => _onboardingController
+                                .validatePageViewFirstPage(),
                             color: Color(0xffDEDEDE),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6),
@@ -106,6 +85,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               Expanded(
                                 child: OutlineButton(
                                   onPressed: () {
+                                    // pageTracker.initialStatePreference();
                                     OnboardingController.pageController
                                         .previousPage(
                                       duration: Duration(milliseconds: 500),
@@ -145,7 +125,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                         curve: Curves.ease,
                                       );
                                     } else {
-                                      _onboardingController.processLastPage();
+                                      _onboardingController
+                                          .validatePageViewLastPage();
                                     }
                                   },
                                   color: Color(0xffDEDEDE),
