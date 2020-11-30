@@ -26,6 +26,9 @@ class OnboardingController extends GetxController {
       backgroundColor: Colors.white,
       colorText: Color.fromRGBO(252, 35, 79, 1));
 
+  bool _isLoading = false;
+  SharedPreferences _prefs;
+
   String _userFullName;
   String _accountType;
 
@@ -39,6 +42,9 @@ class OnboardingController extends GetxController {
   String _businessLocation;
 
   // getters
+  SharedPreferences get preferences => _prefs;
+  bool get isLoading => _isLoading;
+
   int get currentPage => _currentPage;
   String get userFullName => _userFullName;
   String get accountType => _accountType;
@@ -106,16 +112,51 @@ class OnboardingController extends GetxController {
     return;
   }
 
-  Future<void> initialStatePreference() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    _userFullName = _prefs.getString(Constants.PREF_KEY_FULLNAME);
-    print("USER FULLNAME: $_userFullName");
-    _accountType = _prefs.getString(Constants.PREF_KEY_ACC_TYPE);
-    _customerContact = _prefs.getString(Constants.PREF_KEY_CUST_CONTACT);
-    _customerLocation = _prefs.getString(Constants.PREF_KEY_CUST_LOCATION);
-    _businessName = _prefs.getString(Constants.PREF_KEY_BUSS_NAME);
-    _businessContact = _prefs.getString(Constants.PREF_KEY_BUSS_CONTACT);
-    _businessLocation = _prefs.getString(Constants.PREF_KEY_BUSS_LOCATION);
+  Future<SharedPreferences> initialPreference() async {
+    _prefs = await SharedPreferences.getInstance();
+    return _prefs;
+  }
+
+  void setPreferenceValues() {
+    if (_prefs != null) {
+      switch (_currentPage) {
+        case 0:
+          _userFullName = _prefs.getString(Constants.PREF_KEY_FULLNAME);
+          break;
+        case 1:
+          print("hello");
+          _accountType = _prefs.getString(Constants.PREF_KEY_ACC_TYPE);
+          break;
+        case 2:
+          pv2FormKey.currentState.reset();
+          if (_accountType == "I am a Customer") {
+            _customerContact =
+                _prefs.getString(Constants.PREF_KEY_CUST_CONTACT);
+            _customerLocation =
+                _prefs.getString(Constants.PREF_KEY_CUST_LOCATION);
+          } else if (_accountType == "I am a Beautician") {
+            _businessName = _prefs.getString(Constants.PREF_KEY_BUSS_NAME);
+            _businessContact =
+                _prefs.getString(Constants.PREF_KEY_BUSS_CONTACT);
+            _businessLocation =
+                _prefs.getString(Constants.PREF_KEY_BUSS_LOCATION);
+          }
+          break;
+      }
+    }
+  }
+
+  void removePreferences() {
+    if (_prefs != null) {
+      _prefs.clear();
+      // _prefs.remove(Constants.PREF_KEY_FULLNAME);
+      // _prefs.remove(Constants.PREF_KEY_ACC_TYPE);
+      // _prefs.remove(Constants.PREF_KEY_CUST_CONTACT);
+      // _prefs.remove(Constants.PREF_KEY_CUST_LOCATION);
+      // _prefs.remove(Constants.PREF_KEY_BUSS_NAME);
+      // _prefs.remove(Constants.PREF_KEY_BUSS_CONTACT);
+      // _prefs.remove(Constants.PREF_KEY_BUSS_LOCATION);
+    }
   }
 
   void validatePageViewFirstPage() {
@@ -134,52 +175,64 @@ class OnboardingController extends GetxController {
 
       if (accountType == "I am a Beautician") {
         // User is a beautician
-        createBusiness();
+        createBusiness().then((value) => removePreferences());
       } else {
-        createCustomer();
+        createCustomer().then((value) => removePreferences());
         // User is a customer
       }
     }
   }
 
   Future<void> createBusiness() async {
+    _isLoading = true;
+    update();
     try {
-      await userCollection
-          .doc(user.uid)
-          .update({
-            "user_fullname": _userFullName,
-            "business_name": _businessName,
-            "account_type": "business",
-            "contact": _businessContact,
-            "location": _businessLocation,
-          })
-          .then((_) => Get.offAll(StylistHome()))
-          .catchError((error) => errorSnackBar(
-              title: "Error",
-              message: "Something went wrong, please try again"))
-          .timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
+      await userCollection.doc(user.uid).update({
+        "user_fullname": _userFullName,
+        "business_name": _businessName,
+        "account_type": "business",
+        "contact": _businessContact,
+        "location": _businessLocation,
+      }).then((_) {
+        _isLoading = false;
+        update();
+        Get.offAll(StylistHome());
+      }).catchError((error) {
+        _isLoading = false;
+        update();
+        errorSnackBar(
+            title: "Error", message: "Something went wrong, please try again");
+      }).timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
     } on TimeoutException catch (_) {
+      _isLoading = false;
+      update();
       errorSnackBar(
           title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MESSAGE);
     }
   }
 
   Future<void> createCustomer() async {
+    _isLoading = true;
+    update();
     try {
-      await userCollection
-          .doc(user.uid)
-          .update({
-            "user_fullname": _userFullName,
-            "account_type": "customer",
-            "contact": _customerContact,
-            "location": _customerLocation,
-          })
-          .then((_) => Get.offAll(CustomerHome()))
-          .catchError((error) => errorSnackBar(
-              title: "Error",
-              message: "Something went wrong, please try again"))
-          .timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
+      await userCollection.doc(user.uid).update({
+        "user_fullname": _userFullName,
+        "account_type": "customer",
+        "contact": _customerContact,
+        "location": _customerLocation,
+      }).then((_) {
+        _isLoading = false;
+        update();
+        Get.offAll(CustomerHome());
+      }).catchError((error) {
+        _isLoading = false;
+        update();
+        errorSnackBar(
+            title: "Error", message: "Something went wrong, please try again");
+      }).timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
     } on TimeoutException catch (_) {
+      _isLoading = false;
+      update();
       errorSnackBar(
           title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MESSAGE);
     }

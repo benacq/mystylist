@@ -34,29 +34,31 @@ class Landing extends GetWidget<AuthController> {
                     ),
                   ),
                   child: LBody()))
-          : FutureBuilder<dynamic>(
-              //Check if user is stylist, customer or yet to fill onboarding and redirect accordingly
-              future: controller
-                  .isOnboardingComplete(Get.find<AuthController>().user.uid),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Scaffold(
-                    body: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _loader,
-                        SizedBox(
-                          height: 20.0,
+          : SafeArea(
+              child: FutureBuilder<dynamic>(
+                  //Check if user is stylist, customer or yet to fill onboarding and redirect accordingly
+                  future: controller.isOnboardingComplete(
+                      Get.find<AuthController>().user.uid),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Scaffold(
+                        body: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _loader,
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Text("Please wait...")
+                          ],
                         ),
-                        Text("Please wait...")
-                      ],
-                    ),
-                  );
-                } else {
-                  return checkAccountType(snapshot.data);
-                }
-              });
+                      );
+                    } else {
+                      return checkAccountType(snapshot.data);
+                    }
+                  }),
+            );
     });
   }
 
