@@ -9,14 +9,15 @@ class StylistModel {
   bool featured;
   DocumentReference businessRef;
 
-  StylistModel(
-      {this.businessName,
-      this.ownerFullName,
-      this.email,
-      this.contact,
-      this.location,
-      this.featured,
-      this.businessRef});
+  StylistModel({
+    this.businessName,
+    this.ownerFullName,
+    this.email,
+    this.contact,
+    this.location,
+    this.featured,
+    this.businessRef,
+  });
 
   factory StylistModel.fromSnapshot(DocumentSnapshot stylistData) {
     return StylistModel(
