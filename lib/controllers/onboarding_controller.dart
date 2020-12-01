@@ -8,7 +8,6 @@ import 'package:get/route_manager.dart';
 import 'package:my_stylist/screens/customers/customer_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/message_consts.dart' as Constants;
-import 'package:my_stylist/screens/customers/home/customer_home.dart';
 import 'package:my_stylist/screens/stylist/home/stylist_home.dart';
 
 class OnboardingController extends GetxController {
@@ -150,6 +149,7 @@ class OnboardingController extends GetxController {
   void removePreferences() {
     if (_prefs != null) {
       _prefs.clear();
+      // DON'T DELETE THESE COMMENTS, I MAY HAVE TO USE IT LATER IF I DECIDE TO USE SHARED PREFERENCES AGAIN
       // _prefs.remove(Constants.PREF_KEY_FULLNAME);
       // _prefs.remove(Constants.PREF_KEY_ACC_TYPE);
       // _prefs.remove(Constants.PREF_KEY_CUST_CONTACT);
@@ -176,9 +176,9 @@ class OnboardingController extends GetxController {
 
       if (accountType == "I am a Beautician") {
         // User is a beautician
-        createBusiness().then((value) => removePreferences());
+        createBusiness().whenComplete(() => removePreferences());
       } else {
-        createCustomer().then((value) => removePreferences());
+        createCustomer().whenComplete(() => removePreferences());
         // User is a customer
       }
     }
@@ -194,7 +194,7 @@ class OnboardingController extends GetxController {
         "account_type": "business",
         "contact": _businessContact,
         "location": _businessLocation,
-      }).then((_) {
+      }).whenComplete(() {
         _isLoading = false;
         update();
         Get.offAll(StylistHome());
@@ -221,7 +221,7 @@ class OnboardingController extends GetxController {
         "account_type": "customer",
         "contact": _customerContact,
         "location": _customerLocation,
-      }).then((_) {
+      }).whenComplete(() {
         _isLoading = false;
         update();
         Get.offAll(CustomerNavigation());

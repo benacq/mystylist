@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_stylist/screens/customers/account/account.dart';
 
 import '../../utils/colors.dart';
-import '../../utils/colors.dart';
 import 'home/customer_home.dart';
 
 class CustomerNavigation extends StatefulWidget {
