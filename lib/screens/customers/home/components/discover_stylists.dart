@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_stylist/models/stylist_model.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/responsive.dart';
 
 class DiscoverStylists extends StatelessWidget {
-  const DiscoverStylists({
-    Key key,
-  }) : super(key: key);
+  final List<StylistModel> nonFeaturedStylist;
+  DiscoverStylists({Key key, this.nonFeaturedStylist}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class DiscoverStylists extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Mike Barbering Salon',
+                        nonFeaturedStylist[index].businessName,
                         style: GoogleFonts.lato(
                           textStyle: TextStyle(
                             color: UiColors.color3,
@@ -62,7 +62,7 @@ class DiscoverStylists extends StatelessWidget {
                         height: 8,
                       ),
                       Text(
-                        'Kumasi',
+                        nonFeaturedStylist[index].location,
                         style: GoogleFonts.lato(
                           textStyle: TextStyle(
                             color: UiColors.color4,
@@ -78,7 +78,7 @@ class DiscoverStylists extends StatelessWidget {
             ),
           );
         },
-        itemCount: 5,
+        itemCount: nonFeaturedStylist.length,
       ),
     );
   }
