@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:my_stylist/screens/customers/customer_navigation.dart';
-import 'package:my_stylist/screens/customers/home/customer_home.dart';
 import 'package:my_stylist/screens/onboarding/onboarding.dart';
 import 'package:my_stylist/screens/stylist/home/stylist_home.dart';
 import '../utils/message_consts.dart' as Constants;
