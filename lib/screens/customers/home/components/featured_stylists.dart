@@ -39,7 +39,6 @@ class FeaturedStylists extends StatelessWidget {
                     height: screenHeight(context, 0.23),
                     width: screenWidth(context, 60),
                     decoration: BoxDecoration(
-                      color: Colors.red,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
