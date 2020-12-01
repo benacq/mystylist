@@ -76,7 +76,7 @@ class StylistAccount extends StatelessWidget {
                   height: 21,
                 ),
                 Container(
-                  height: 350,
+                  height: 370,
                   width: screenWidth(context, 1),
                   decoration: BoxDecoration(
                     color: UiColors.color1,
