@@ -34,7 +34,6 @@ class DiscoverStylists extends StatelessWidget {
                     width: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.red,
                       image: DecorationImage(
                         image: AssetImage('assets/images/bg.jpg'),
                         fit: BoxFit.cover,
