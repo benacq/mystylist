@@ -10,7 +10,6 @@ import 'package:my_stylist/screens/reusablecomponents/textbox_seperator.dart';
 import 'package:my_stylist/screens/reusablecomponents/txt_decoration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../utils/colors.dart';
-import '../../../utils/colors.dart';
 import '../../../utils/message_consts.dart' as Constants;
 
 import 'package:my_stylist/utils/responsive.dart';
@@ -143,8 +142,9 @@ class OnboardingPageView extends StatelessWidget {
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
                                 onChanged: (custContact) => prefs.setString(
-                                    Constants.PREF_KEY_CUST_CONTACT,
-                                    custContact),
+                                  Constants.PREF_KEY_CUST_CONTACT,
+                                  custContact,
+                                ),
                                 initialValue: pageTracker.customerContact,
                                 onSaved: (customerContact) =>
                                     _onboardingController.setCustomerContact =

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/route_manager.dart';
 import 'package:my_stylist/screens/customers/customer_navigation.dart';
+import 'package:my_stylist/screens/stylist/stylist_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/message_consts.dart' as Constants;
 import 'package:my_stylist/screens/stylist/home/stylist_home.dart';
@@ -197,7 +198,7 @@ class OnboardingController extends GetxController {
       }).whenComplete(() {
         _isLoading = false;
         update();
-        Get.offAll(StylistHome());
+        Get.offAll(StylistNavigation());
       }).catchError((error) {
         _isLoading = false;
         update();

@@ -5,6 +5,7 @@ import 'package:my_stylist/controllers/auth_controller.dart';
 import 'package:my_stylist/screens/customers/customer_navigation.dart';
 import 'package:my_stylist/screens/landing/components/l_body.dart';
 import 'package:my_stylist/screens/onboarding/onboarding.dart';
+import 'package:my_stylist/screens/stylist/stylist_navigation.dart';
 import '../../utils/message_consts.dart' as Constants;
 import 'package:my_stylist/screens/stylist/home/stylist_home.dart';
 
@@ -57,7 +58,7 @@ class Landing extends GetWidget<AuthController> {
 
   Widget checkAccountType(dynamic status) {
     if (status == Constants.USER_ACCOUNT_BUSINESS) {
-      return StylistHome();
+      return StylistNavigation();
     } else if (status == Constants.USER_ACCOUNT_CUSTOMER) {
       return CustomerNavigation();
     } else {

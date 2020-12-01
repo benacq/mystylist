@@ -10,7 +10,7 @@ import '../../../controllers/auth_controller.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/responsive.dart';
 
-class Account extends StatelessWidget {
+class StylistAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,16 +43,32 @@ class Account extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      'Asamoah MIchael',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.lato(
-                        textStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: UiColors.color4,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Ben Salon',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: UiColors.color4,
+                            ),
+                          ),
                         ),
-                      ),
+                        Text(
+                          'Asamoah Michael',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF7B7B7B),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -60,7 +76,7 @@ class Account extends StatelessWidget {
                   height: 21,
                 ),
                 Container(
-                  height: screenHeight(context, 0.45),
+                  height: 350,
                   width: screenWidth(context, 1),
                   decoration: BoxDecoration(
                     color: UiColors.color1,
@@ -85,7 +101,7 @@ class Account extends StatelessWidget {
                       CustomDivider(),
                       AccountData(
                         label: 'Account Type',
-                        value: 'Customer',
+                        value: 'Business',
                       ),
                     ],
                   ),
