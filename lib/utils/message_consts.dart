@@ -1,5 +1,14 @@
 library constants;
 
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+//Its being used around 3 places thats why i have brought it here
+const LOADER = SpinKitFadingCircle(
+  color: Colors.blueAccent,
+  size: 45.0,
+);
+
 const int TIMEOUT_SECS = 14;
 
 const String SUCCESS_MESSAGE = " You will be contacted by us very soon.";

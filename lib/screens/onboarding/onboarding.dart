@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -8,7 +7,7 @@ import 'package:my_stylist/screens/onboarding/components/pages.dart';
 import 'package:my_stylist/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/colors.dart';
-import '../../utils/colors.dart';
+import '../../utils/message_consts.dart' as Constants;
 import 'components/onboarding_progress_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -31,11 +30,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
     return list;
   }
-
-  final _loader = SpinKitFadingCircle(
-    color: Colors.blueAccent,
-    size: 45.0,
-  );
 
   @override
   void initState() {
@@ -60,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _loader,
+                          Constants.LOADER,
                           SizedBox(
                             height: 20.0,
                           ),

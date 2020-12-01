@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_stylist/controllers/stylist_controller.dart';
 import 'package:my_stylist/models/stylist_model.dart';
 import 'package:my_stylist/screens/customers/home/components/discover_stylists.dart';
 import 'package:my_stylist/screens/customers/home/components/featured_stylists.dart';
 import '../../../utils/colors.dart';
+import '../../../utils/message_consts.dart' as Constants;
 import '../../reusablecomponents/txt_decoration.dart';
 
 class CustomerHome extends StatelessWidget {
@@ -21,8 +23,16 @@ class CustomerHome extends StatelessWidget {
                   child: Text("An error occured"),
                 );
               } else if (!snapshot.hasData) {
-                return Center(
-                  child: Text("Loading"),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Constants.LOADER,
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Text("Almost done...")
+                  ],
                 );
               } else {
                 return SingleChildScrollView(
