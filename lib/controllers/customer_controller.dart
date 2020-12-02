@@ -19,6 +19,7 @@ class CustomerController extends GetxController {
   CollectionReference userCollection =
       FirebaseFirestore.instance.collection("Users");
   User user = FirebaseAuth.instance.currentUser;
+  bool _isLoading = false;
 
   static final errorSnackBar = ({String title, String message}) => Get.snackbar(
       title, message,
@@ -27,6 +28,7 @@ class CustomerController extends GetxController {
       colorText: Color.fromRGBO(252, 35, 79, 1));
 
   List<bool> get isEnabled => _isEnabled;
+  bool get isLoading => _isLoading;
 
   setIsEnabled(int index, bool state) {
     _isEnabled[index] = state;
@@ -34,22 +36,28 @@ class CustomerController extends GetxController {
   }
 
   Future<void> updateSingleData(int index, String key, String value) async {
-    print("HELLO");
     if (formKeys[index].currentState.validate()) {
       formKeys[index].currentState.save();
       try {
+        _isLoading = true;
+        update();
         await userCollection.doc(user.uid).update({
           key: value,
-        }).whenComplete(() {
+        }).then((value) {
           Fluttertoast.showToast(msg: "Data updated");
           _isEnabled[index] = false;
+          _isLoading = false;
           update();
         }).catchError((error) {
+          _isLoading = false;
+          update();
           errorSnackBar(
               title: "Error",
               message: "Something went wrong, please try again");
         }).timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
       } on TimeoutException catch (_) {
+        _isLoading = false;
+        update();
         errorSnackBar(
             title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MESSAGE);
       }

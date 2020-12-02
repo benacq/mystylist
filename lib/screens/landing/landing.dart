@@ -7,7 +7,6 @@ import 'package:my_stylist/screens/landing/components/l_body.dart';
 import 'package:my_stylist/screens/onboarding/onboarding.dart';
 import 'package:my_stylist/screens/stylist/stylist_navigation.dart';
 import '../../utils/message_consts.dart' as Constants;
-import 'package:my_stylist/screens/stylist/home/stylist_home.dart';
 
 class Landing extends GetWidget<AuthController> {
   @override

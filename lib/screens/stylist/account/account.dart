@@ -11,6 +11,16 @@ import '../../../utils/colors.dart';
 import '../../../utils/responsive.dart';
 
 class StylistAccount extends StatelessWidget {
+  final InputDecoration inputDecoration = InputDecoration(
+      enabled: true, border: InputBorder.none, isCollapsed: true);
+
+  final TextStyle googleFonts = GoogleFonts.lato(
+    textStyle: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+      color: UiColors.color3,
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,22 +96,66 @@ class StylistAccount extends StatelessWidget {
                     children: [
                       AccountData(
                         label: 'Email',
-                        value: 'qyeron@gmail.com',
+                        textFormField: TextFormField(
+                            initialValue: "qyeron@gmail.com",
+                            style: googleFonts,
+                            decoration: inputDecoration),
+                        handlerButton: GestureDetector(
+                          onTap: () => print("HELLO"),
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 17,
+                            color: UiColors.color3,
+                          ),
+                        ),
                       ),
                       CustomDivider(),
                       AccountData(
                         label: 'Phone number',
-                        value: '0244123456',
+                        textFormField: TextFormField(
+                            initialValue: "0244123456",
+                            style: googleFonts,
+                            decoration: inputDecoration),
+                        handlerButton: GestureDetector(
+                          onTap: () => print("HELLO"),
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 17,
+                            color: UiColors.color3,
+                          ),
+                        ),
                       ),
                       CustomDivider(),
                       AccountData(
                         label: 'Location',
-                        value: 'Kumasi',
+                        textFormField: TextFormField(
+                            initialValue: "Kumasi",
+                            style: googleFonts,
+                            decoration: inputDecoration),
+                        handlerButton: GestureDetector(
+                          onTap: () => print("HELLO"),
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 17,
+                            color: UiColors.color3,
+                          ),
+                        ),
                       ),
                       CustomDivider(),
                       AccountData(
                         label: 'Account Type',
-                        value: 'Business',
+                        textFormField: TextFormField(
+                            initialValue: "Customer",
+                            style: googleFonts,
+                            decoration: inputDecoration),
+                        handlerButton: GestureDetector(
+                          onTap: () => print("HELLO"),
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 17,
+                            color: UiColors.color3,
+                          ),
+                        ),
                       ),
                     ],
                   ),
