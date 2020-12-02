@@ -8,18 +8,9 @@ import 'package:my_stylist/screens/reusablecomponents/logout_button.dart';
 import 'package:my_stylist/screens/reusablecomponents/reset_password_button.dart';
 import '../../../controllers/auth_controller.dart';
 import '../../../utils/colors.dart';
+import '../../../utils/responsive.dart';
 
-class Account extends StatelessWidget {
-  final InputDecoration inputDecoration = InputDecoration(
-      enabled: true, border: InputBorder.none, isCollapsed: true);
-
-  final TextStyle googleFonts = GoogleFonts.lato(
-    textStyle: TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
-      color: UiColors.color3,
-    ),
-  );
+class StylistAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,16 +43,32 @@ class Account extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      'Asamoah MIchael',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.lato(
-                        textStyle: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: UiColors.color4,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Ben Salon',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: UiColors.color4,
+                            ),
+                          ),
                         ),
-                      ),
+                        Text(
+                          'Asamoah Michael',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF7B7B7B),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -69,6 +76,8 @@ class Account extends StatelessWidget {
                   height: 21,
                 ),
                 Container(
+                  height: 370,
+                  width: screenWidth(context, 1),
                   decoration: BoxDecoration(
                     color: UiColors.color1,
                     borderRadius: BorderRadius.circular(12),
@@ -77,66 +86,22 @@ class Account extends StatelessWidget {
                     children: [
                       AccountData(
                         label: 'Email',
-                        textFormField: TextFormField(
-                            initialValue: "qyeron@gmail.com",
-                            style: googleFonts,
-                            decoration: inputDecoration),
-                        handlerButton: GestureDetector(
-                          onTap: () => print("HELLO"),
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            size: 17,
-                            color: UiColors.color3,
-                          ),
-                        ),
+                        value: 'qyeron@gmail.com',
                       ),
                       CustomDivider(),
                       AccountData(
                         label: 'Phone number',
-                        textFormField: TextFormField(
-                            initialValue: "0244123456",
-                            style: googleFonts,
-                            decoration: inputDecoration),
-                        handlerButton: GestureDetector(
-                          onTap: () => print("HELLO"),
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            size: 17,
-                            color: UiColors.color3,
-                          ),
-                        ),
+                        value: '0244123456',
                       ),
                       CustomDivider(),
                       AccountData(
                         label: 'Location',
-                        textFormField: TextFormField(
-                            initialValue: "Kumasi",
-                            style: googleFonts,
-                            decoration: inputDecoration),
-                        handlerButton: GestureDetector(
-                          onTap: () => print("HELLO"),
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            size: 17,
-                            color: UiColors.color3,
-                          ),
-                        ),
+                        value: 'Kumasi',
                       ),
                       CustomDivider(),
                       AccountData(
                         label: 'Account Type',
-                        textFormField: TextFormField(
-                            initialValue: "Customer",
-                            style: googleFonts,
-                            decoration: inputDecoration),
-                        handlerButton: GestureDetector(
-                          onTap: () => print("HELLO"),
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            size: 17,
-                            color: UiColors.color3,
-                          ),
-                        ),
+                        value: 'Business',
                       ),
                     ],
                   ),
