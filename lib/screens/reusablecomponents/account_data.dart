@@ -4,12 +4,11 @@ import '../../utils/colors.dart';
 
 class AccountData extends StatelessWidget {
   final String label;
-  final String value;
-  const AccountData({
-    Key key,
-    this.label,
-    this.value,
-  }) : super(key: key);
+  final Widget handlerButton;
+  final Widget textFormField;
+  const AccountData(
+      {Key key, this.label, this.handlerButton, this.textFormField})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,42 +16,29 @@ class AccountData extends StatelessWidget {
       padding: const EdgeInsets.all(20.0),
       child: Row(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.lato(
-                  textStyle: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: UiColors.color4,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300,
+                      color: UiColors.color4,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(
-                value,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.lato(
-                  textStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: UiColors.color3,
-                  ),
+                SizedBox(
+                  height: 4,
                 ),
-              ),
-            ],
+                Container(child: textFormField)
+              ],
+            ),
           ),
-          Spacer(),
-          Icon(
-            Icons.arrow_forward_ios,
-            size: 17,
-            color: UiColors.color3,
-          ),
+          handlerButton
         ],
       ),
     );
