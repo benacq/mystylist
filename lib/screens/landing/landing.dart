@@ -7,7 +7,6 @@ import 'package:my_stylist/screens/landing/components/l_body.dart';
 import 'package:my_stylist/screens/onboarding/onboarding.dart';
 import 'package:my_stylist/screens/stylist/stylist_navigation.dart';
 import '../../utils/message_consts.dart' as Constants;
-import 'package:my_stylist/screens/stylist/home/stylist_home.dart';
 
 class Landing extends GetWidget<AuthController> {
   @override
@@ -31,8 +30,7 @@ class Landing extends GetWidget<AuthController> {
           : SafeArea(
               child: FutureBuilder<dynamic>(
                   //Check if user is stylist, customer or yet to fill onboarding and redirect accordingly
-                  future: controller.isOnboardingComplete(
-                      Get.find<AuthController>().user.uid),
+                  future: controller.isOnboardingComplete(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Scaffold(
