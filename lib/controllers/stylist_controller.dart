@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_stylist/models/stylist_model.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
@@ -15,16 +16,16 @@ class StylistController extends GetxController {
   String _price;
   String _duration;
   String _numberOfBookingsExpected;
-  bool _isLoading = true;
+  bool _isLoading = false;
 
-  //getters
+  //getters adding services
   String get serviceName => _serviceName;
   String get price => _price;
   String get duration => _duration;
   String get numberofBookingsExpected => _numberOfBookingsExpected;
   bool get isLoading => _isLoading;
 
-//setters
+//setters for adding services
   set setserviceName(String serviceName) {
     if (serviceName != null) {
       _serviceName = serviceName;
@@ -82,10 +83,12 @@ class StylistController extends GetxController {
         'numberofbookingsexpectd': _numberOfBookingsExpected,
         'stylist_ref': services.doc(_uid),
       });
+      Fluttertoast.showToast(msg: 'Service added');
+      addServiceFormKey.currentState.reset();
       return result;
     } catch (e) {
       _isLoading = false;
-       update();
+      update();
       throw e;
     }
   }

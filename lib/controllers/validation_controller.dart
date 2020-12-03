@@ -41,14 +41,14 @@ class ValidationService {
 
   static validateserviceName(String serviceName) {
     if (serviceName.isEmpty) {
-      return "Please the servicee name";
+      return "Please enter a service name";
     }
     return null;
   }
 
   static validateprice(String price) {
     if (price.isEmpty) {
-      return "Please the servicee name";
+      return "Please enter a price";
     } else if (!price.isNumericOnly) {
       return 'Price should only be numbers';
     }
@@ -57,14 +57,16 @@ class ValidationService {
 
   static validateduration(String duration) {
     if (duration.isEmpty) {
-      return "Please the servicee name";
+      return "Please enter a duration";
+    } else if (duration.isAlphabetOnly || duration.isNumericOnly) {
+      return 'Enter a valid duration time';
     }
     return null;
   }
 
   static validateexpectedNumber(String expectedNumber) {
     if (expectedNumber.isEmpty) {
-      return "Please the servicee name";
+      return "Please enter the expected number of customer per day";
     } else if (!expectedNumber.isNumericOnly) {
       return 'Expected number should only be numbers';
     }

@@ -3,7 +3,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_stylist/controllers/shared_controller.dart';
 import 'package:my_stylist/models/customer_model.dart';
-import 'package:my_stylist/screens/customers/account/account_fields.dart';
+import 'package:my_stylist/screens/customers/account/components/account_fields.dart';
 import 'package:my_stylist/screens/reusablecomponents/header.dart';
 import 'package:my_stylist/screens/reusablecomponents/logout_button.dart';
 import 'package:my_stylist/screens/reusablecomponents/reset_password_button.dart';

@@ -9,7 +9,6 @@ import 'package:my_stylist/screens/customers/customer_navigation.dart';
 import 'package:my_stylist/screens/stylist/stylist_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/message_consts.dart' as Constants;
-import 'package:my_stylist/screens/stylist/home/stylist_home.dart';
 
 class OnboardingController extends GetxController {
   static final GlobalKey<FormState> pv1FormKey = GlobalKey<FormState>();
