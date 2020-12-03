@@ -38,4 +38,36 @@ class ValidationService {
     }
     return null;
   }
+
+  static validateserviceName(String serviceName) {
+    if (serviceName.isEmpty) {
+      return "Please the servicee name";
+    }
+    return null;
+  }
+
+  static validateprice(String price) {
+    if (price.isEmpty) {
+      return "Please the servicee name";
+    } else if (!price.isNumericOnly) {
+      return 'Price should only be numbers';
+    }
+    return null;
+  }
+
+  static validateduration(String duration) {
+    if (duration.isEmpty) {
+      return "Please the servicee name";
+    }
+    return null;
+  }
+
+  static validateexpectedNumber(String expectedNumber) {
+    if (expectedNumber.isEmpty) {
+      return "Please the servicee name";
+    } else if (!expectedNumber.isNumericOnly) {
+      return 'Expected number should only be numbers';
+    }
+    return null;
+  }
 }

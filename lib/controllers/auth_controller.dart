@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:my_stylist/screens/customers/customer_navigation.dart';
-import 'package:my_stylist/screens/customers/home/customer_home.dart';
 import 'package:my_stylist/screens/onboarding/onboarding.dart';
-import 'package:my_stylist/screens/stylist/home/stylist_home.dart';
 import 'package:my_stylist/screens/stylist/stylist_navigation.dart';
 import '../utils/message_consts.dart' as Constants;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -35,10 +33,12 @@ class AuthController extends GetxController {
   User get user => _firebaseUser?.value;
 
   static final errorSnackBar = ({String title, String message}) => Get.snackbar(
-      title, message,
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.white,
-      colorText: Color.fromRGBO(252, 35, 79, 1));
+        title,
+        message,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.white,
+        colorText: Color.fromRGBO(252, 35, 79, 1),
+      );
 
   @override
   void onInit() {
