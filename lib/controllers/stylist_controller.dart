@@ -85,6 +85,8 @@ class StylistController extends GetxController {
       });
       Fluttertoast.showToast(msg: 'Service added');
       addServiceFormKey.currentState.reset();
+      _isLoading = false;
+      update();
       return result;
     } catch (e) {
       _isLoading = false;
