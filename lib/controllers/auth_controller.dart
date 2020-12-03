@@ -31,10 +31,8 @@ class AuthController extends GetxController {
   String get pass => _password;
   bool get isPasswordMasked => _isPasswordMasked;
   bool get isLoading => _isLoading;
-
   User get user => _firebaseUser?.value;
 
-// 252, 35, 79
   static final messageSnackbar = (
           {String title,
           String message,
@@ -69,8 +67,11 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<dynamic> isOnboardingComplete(String uid) async {
-    return userCollection.doc(uid).get().then((document) {
+  Future<dynamic> isOnboardingComplete() async {
+    return userCollection
+        .doc(_firebaseAuth.currentUser.uid)
+        .get()
+        .then((document) {
       if (document.data().containsKey("account_type")) {
         return document.get("account_type");
       } else {
@@ -79,21 +80,14 @@ class AuthController extends GetxController {
     });
   }
 
-  Future<CustomerModel> get getUserData async {
-    return userCollection
-        .doc(_firebaseAuth.currentUser.uid)
-        .get()
-        .then((document) => CustomerModel.fromSnapshot(document));
-  }
-
-  Future changeEmail(newEmail) async {
-    _firebaseAuth.currentUser
-        .updateEmail(newEmail)
-        .then((value) => messageSnackbar(
-            title: "Email updated",
-            message: "Your email has been changed",
-            colorText: Color.fromRGBO(66, 201, 152, 1)))
-        .catchError((error) {
+  Future<bool> changeEmail(newEmail) async {
+    return _firebaseAuth.currentUser.updateEmail(newEmail).then((value) {
+      messageSnackbar(
+          title: "Email updated",
+          message: "Your email has been changed",
+          colorText: Color.fromRGBO(66, 201, 152, 1));
+      return true;
+    }).catchError((error) {
       switch (error?.code) {
         case "invalid-email":
           messageSnackbar(
@@ -117,6 +111,7 @@ class AuthController extends GetxController {
               title: "Error",
               message: "Something went wrong, please try again later");
       }
+      return false;
     });
   }
 
@@ -163,9 +158,7 @@ class AuthController extends GetxController {
           .signInWithEmailAndPassword(email: _email, password: _password)
           .then((userData) async {
         // Check if user has filled onboarding already before redirecting
-        await AuthController()
-            .isOnboardingComplete(userData.user.uid)
-            .then((status) {
+        await AuthController().isOnboardingComplete().then((status) {
           _isLoading = false;
           update();
           if (status == Constants.USER_ACCOUNT_BUSINESS) {

@@ -30,8 +30,7 @@ class Landing extends GetWidget<AuthController> {
           : SafeArea(
               child: FutureBuilder<dynamic>(
                   //Check if user is stylist, customer or yet to fill onboarding and redirect accordingly
-                  future: controller.isOnboardingComplete(
-                      Get.find<AuthController>().user.uid),
+                  future: controller.isOnboardingComplete(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Scaffold(

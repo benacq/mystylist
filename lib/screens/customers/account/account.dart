@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_stylist/controllers/shared_controller.dart';
 import 'package:my_stylist/models/customer_model.dart';
 import 'package:my_stylist/screens/customers/account/account_fields.dart';
 import 'package:my_stylist/screens/reusablecomponents/header.dart';
@@ -17,10 +18,7 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
-  final TextEditingController passwordController = TextEditingController();
-
   final GlobalKey<FormState> passwordFormkey = GlobalKey<FormState>();
-
   String password;
 
   @override
@@ -28,7 +26,7 @@ class _AccountState extends State<Account> {
     return Scaffold(
       backgroundColor: UiColors.color2,
       body: FutureBuilder<CustomerModel>(
-          future: AuthController().getUserData,
+          future: SharedController().getCustomerData,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: Constants.LOADER);

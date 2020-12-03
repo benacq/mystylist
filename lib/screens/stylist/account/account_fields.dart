@@ -4,30 +4,27 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_stylist/controllers/auth_controller.dart';
-import 'package:my_stylist/controllers/customer_controller.dart';
 import 'package:my_stylist/controllers/shared_controller.dart';
-import 'package:my_stylist/models/customer_model.dart';
+import 'package:my_stylist/models/stylist_model.dart';
 import 'package:my_stylist/screens/reusablecomponents/account_data.dart';
 import 'package:my_stylist/controllers/validation_controller.dart';
 import 'package:my_stylist/screens/reusablecomponents/custom_divider.dart';
 import 'package:my_stylist/utils/colors.dart';
 
-class AccountFields extends StatefulWidget {
-  final CustomerModel model;
-  AccountFields({this.model});
+class StylistAccountFields extends StatefulWidget {
+  final StylistModel model;
+  StylistAccountFields({this.model});
   @override
   _AccountFieldsState createState() => _AccountFieldsState();
 }
 
-class _AccountFieldsState extends State<AccountFields> {
+class _AccountFieldsState extends State<StylistAccountFields> {
   SharedController sharedController = Get.put(SharedController());
 
   final loading = SpinKitThreeBounce(
     color: Colors.white,
     size: 12.0,
   );
-
-  FocusNode emailFocus = new FocusNode();
 
   String email;
   String location;
@@ -43,7 +40,6 @@ class _AccountFieldsState extends State<AccountFields> {
             textFormField: Form(
               key: SharedController.formKeys[0],
               child: TextFormField(
-                  focusNode: emailFocus,
                   onSaved: (newValue) => email = newValue,
                   validator: (email) => ValidationService.validateEmail(email),
                   initialValue: widget.model.email,
@@ -66,12 +62,11 @@ class _AccountFieldsState extends State<AccountFields> {
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 FormState formState = SharedController.formKeys[0].currentState;
-
                 if (formState.validate()) {
                   formState.save();
                   if (!email.isNull && email != widget.model.email) {
-                    AuthController().changeEmail(email).then((wasSuccess) {
-                      if (wasSuccess) {
+                    AuthController().changeEmail(email).then((value) {
+                      if (value) {
                         state.updateSingleData(0, "email", email).then((value) {
                           if (value == true) {
                             Fluttertoast.showToast(msg: "Updated");
@@ -239,10 +234,7 @@ class _AccountFieldsState extends State<AccountFields> {
                       border: InputBorder.none,
                       isCollapsed: true)),
             ),
-            handlerButton: Text(
-              "Register business",
-              style: TextStyle(color: Colors.red),
-            ),
+            handlerButton: Text(''),
           );
         }),
       ],
