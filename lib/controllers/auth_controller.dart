@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:my_stylist/models/customer_model.dart';
 import 'package:my_stylist/screens/customers/customer_navigation.dart';
 import 'package:my_stylist/screens/onboarding/onboarding.dart';
 import 'package:my_stylist/screens/stylist/stylist_navigation.dart';

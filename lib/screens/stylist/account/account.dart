@@ -10,7 +10,6 @@ import 'package:my_stylist/screens/stylist/account/account_fields.dart';
 import '../../../controllers/auth_controller.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/message_consts.dart' as Constants;
-import '../../../utils/responsive.dart';
 
 class StylistAccount extends StatefulWidget {
   @override
