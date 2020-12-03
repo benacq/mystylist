@@ -15,7 +15,7 @@ class StylistController extends GetxController {
   String _price;
   String _duration;
   String _numberOfBookingsExpected;
-  bool _isLoading = false;
+  bool _isLoading = true;
 
   //getters
   String get serviceName => _serviceName;
