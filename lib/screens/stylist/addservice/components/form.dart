@@ -12,7 +12,7 @@ import '../../../reusablecomponents/textbox_seperator.dart';
 import '../../../reusablecomponents/txt_decoration.dart';
 
 class AddServiceform extends StatelessWidget {
-  final StylistController stylistController = StylistController();
+  final StylistController stylistController = Get.put(StylistController());
   final loader = SpinKitFadingFour(
     color: Colors.blueAccent,
     size: 35.0,
@@ -77,16 +77,14 @@ class AddServiceform extends StatelessWidget {
           SizedBox(
             height: screenHeight(context, 0.07),
           ),
-          GetBuilder<StylistController>(
-              init: StylistController(),
-              builder: (_) {
-                return ReusableButton(
-                    label: _.isLoading ? loader : Text('Add Service'),
-                    onpress: () {
-                      stylistController.addService();
-                      print(_.isLoading);
-                    });
-              }),
+          GetBuilder<StylistController>(builder: (_) {
+            return ReusableButton(
+                label: _.isLoading ? loader : Text('Add Service'),
+                onpress: () {
+                  stylistController.addService();
+                  print(_.isLoading);
+                });
+          }),
         ],
       ),
     );
