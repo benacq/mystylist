@@ -31,7 +31,10 @@ class CustomerHome extends StatelessWidget {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Text("Almost done...")
+                    Text(
+                      "Almost done...",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ],
                 );
               } else {
