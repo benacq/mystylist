@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_stylist/models/stylist_model.dart';
-import 'package:my_stylist/screens/customers/details/components/stylist_details_widget.dart';
+import 'package:my_stylist/screens/customers/details/components/gallery_tab.dart';
+import 'package:my_stylist/screens/customers/details/components/services_tab.dart';
 import 'package:my_stylist/utils/colors.dart';
 import 'package:my_stylist/utils/responsive.dart';
 
@@ -16,19 +17,11 @@ class StylistDetails extends StatefulWidget {
 }
 
 class _StylistDetailsState extends State<StylistDetails> {
-  DynamicInfo display = DynamicInfo();
-  Widget updatedUI;
   CustomTab customTab = CustomTab.services;
-
-  updateUI() {
-    setState(() {
-      updatedUI = display.display(customTab, context);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    updateUI();
+    // updateUI();
 
     return Scaffold(
       backgroundColor: UiColors.color2,
@@ -128,16 +121,12 @@ class _StylistDetailsState extends State<StylistDetails> {
                     SizedBox(
                       height: screenHeight(context, 0.03),
                     ),
-
-                    //ROW FOR SEVICES AND GALLERY TABS
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         GestureDetector(
                           onTap: () {
                             setState(() {
                               customTab = CustomTab.services;
-                              updateUI();
                             });
                           },
                           child: Column(
@@ -173,7 +162,6 @@ class _StylistDetailsState extends State<StylistDetails> {
                           onTap: () {
                             setState(() {
                               customTab = CustomTab.gallery;
-                              updateUI();
                             });
                           },
                           child: Column(
@@ -201,14 +189,16 @@ class _StylistDetailsState extends State<StylistDetails> {
                                   : Container(),
                             ],
                           ),
-                        ),
+                        )
                       ],
                     ),
                     SizedBox(
                       height: screenHeight(context, 0.03),
                     ),
-
-                    updatedUI, //display dynamic information based on selectd tab
+                    customTab == CustomTab.services
+                        ? ServicesTab(
+                            tappedItemRef: widget.featuredStylists.stylistRef)
+                        : GalleryTab(),
                   ],
                 ),
               ),

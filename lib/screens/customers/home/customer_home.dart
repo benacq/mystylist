@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_stylist/controllers/stylist_controller.dart';
 import 'package:my_stylist/models/stylist_model.dart';
@@ -16,7 +15,7 @@ class CustomerHome extends StatelessWidget {
       child: Scaffold(
         backgroundColor: UiColors.color2,
         body: StreamBuilder<List<StylistModel>>(
-            stream: StylistController().stylists,
+            stream: StylistController().stylists(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Center(
