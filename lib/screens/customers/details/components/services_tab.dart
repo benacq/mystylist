@@ -5,6 +5,7 @@ import 'package:my_stylist/controllers/stylist_controller.dart';
 import 'package:my_stylist/models/service_model.dart';
 import 'package:my_stylist/utils/colors.dart';
 import 'package:my_stylist/utils/responsive.dart';
+import '../../../../utils/message_consts.dart' as Constants;
 
 class ServicesTab extends StatelessWidget {
   final DocumentReference tappedItemRef;
@@ -17,12 +18,24 @@ class ServicesTab extends StatelessWidget {
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return Center(
-                  child: Text("Will put a loader here",
-                      style: TextStyle(color: Colors.white)),
+                  child: Constants.LOADER,
+                  // Text(
+                  //   "Will put a loader here",
+                  //   style: TextStyle(color: Colors.white),
+                  // ),
                 );
               } else if (snapshot.hasError) {
                 return Center(
-                  child: Text('Error'),
+                  child: Text(
+                    'Error',
+                    style: GoogleFonts.lato(
+                      textStyle: TextStyle(
+                        color: Colors.red,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
                 );
               }
               List<ServiceModel> serviceList = snapshot.data;
