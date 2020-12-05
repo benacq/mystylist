@@ -19,10 +19,6 @@ class ServicesTab extends StatelessWidget {
               if (!snapshot.hasData) {
                 return Center(
                   child: Constants.LOADER,
-                  // Text(
-                  //   "Will put a loader here",
-                  //   style: TextStyle(color: Colors.white),
-                  // ),
                 );
               } else if (snapshot.hasError) {
                 return Center(
@@ -32,6 +28,19 @@ class ServicesTab extends StatelessWidget {
                       textStyle: TextStyle(
                         color: Colors.red,
                         fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                );
+              } else if (snapshot.hasData && snapshot.data.isEmpty) {
+                return Center(
+                  child: Text(
+                    'Stylist has no Service',
+                    style: GoogleFonts.lato(
+                      textStyle: TextStyle(
+                        color: UiColors.color3,
+                        fontSize: 15,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -61,6 +70,7 @@ class ServicesTab extends StatelessWidget {
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Container(
                                   width: screenWidth(context, 0.5),
@@ -86,7 +96,7 @@ class ServicesTab extends StatelessWidget {
                             Spacer(),
                             Center(
                               child: Text(
-                                serviceList[index].price,
+                                'Ghc ${serviceList[index].price}',
                                 style: GoogleFonts.lato(
                                   textStyle: TextStyle(
                                       fontSize: 15,
