@@ -16,7 +16,7 @@ class CustomerModel {
       this.customerRef,
       this.accountType});
 
-  factory CustomerModel.fromSnapshot(DocumentSnapshot customeData) {
+  factory CustomerModel.fromSnapshot(QueryDocumentSnapshot customeData) {
     return CustomerModel(
         customerRef: customeData.reference,
         fullName: customeData.data()['user_fullname'],

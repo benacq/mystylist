@@ -8,7 +8,7 @@ class StylistModel {
   String location;
   bool featured;
   String accountType;
-  DocumentReference businessRef;
+  DocumentReference stylistRef;
 
   StylistModel(
       {this.businessName,
@@ -17,12 +17,12 @@ class StylistModel {
       this.contact,
       this.location,
       this.featured,
-      this.businessRef,
+      this.stylistRef,
       this.accountType});
 
-  factory StylistModel.fromSnapshot(DocumentSnapshot stylistData) {
+  factory StylistModel.fromSnapshot(QueryDocumentSnapshot stylistData) {
     return StylistModel(
-        businessRef: stylistData.reference,
+        stylistRef: stylistData.reference,
         businessName: stylistData.data()['business_name'],
         ownerFullName: stylistData.data()['user_fullname'],
         email: stylistData.data()['email'],
