@@ -32,13 +32,6 @@ class AuthController extends GetxController {
   bool get isLoading => _isLoading;
   User get user => _firebaseUser?.value;
 
-  static final errorSnackBar = ({String title, String message}) => Get.snackbar(
-        title,
-        message,
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.white,
-        colorText: Color.fromRGBO(252, 35, 79, 1),
-      );
   static final messageSnackbar = (
           {String title,
           String message,
