@@ -1,18 +1,41 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:get/state_manager.dart';
 import 'package:my_stylist/models/service_model.dart';
 import 'package:my_stylist/models/stylist_model.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart';
 
 class StylistController extends GetxController {
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
   static final GlobalKey<FormState> addServiceFormKey = GlobalKey<FormState>();
   String _uid = FirebaseAuth.instance.currentUser.uid;
   CollectionReference users = FirebaseFirestore.instance.collection("Users");
   CollectionReference services =
       FirebaseFirestore.instance.collection('services');
+  int _maxNumFilesAllowed = 5;
+  List<File> _images = List();
+
+  static final FilePicker _picker = FilePicker.platform;
+
+  static final messageSnackbar = (
+          {String title,
+          String message,
+          Duration duration = const Duration(seconds: 3),
+          Color colorText = const Color.fromRGBO(252, 35, 79, 1)}) =>
+      Get.snackbar(title, message,
+          snackPosition: SnackPosition.BOTTOM,
+          duration: duration,
+          backgroundColor: Colors.white,
+          colorText: colorText);
 
   String _serviceName;
   String _price;
@@ -84,22 +107,6 @@ class StylistController extends GetxController {
             .toList());
   }
 
-  // Stream<List<ServiceModel>> fetchServicesWithStylists() {
-  //   return Rx.combineLatest2(stylists(), getServices(),
-  //       (List<StylistModel> stylistBusiness, List<ServiceModel> services) {
-  //     print(stylistBusiness.length);
-  //     return stylistBusiness.map((stylist) {
-  //       final servicesData = services?.firstWhere(
-  //           (cart) => cart.stylistRef.id == stylist.stylistRef.id,
-  //           orElse: () => null);
-  //       if (servicesData != null) {
-  //         print(servicesData.serviceName);
-  //         return ServiceModel.fromModel(servicesData, stylist);
-  //       }
-  //     }).toList();
-  //   });
-  // }
-
 //add service
   Future<void> addService() async {
     if (!addServiceFormKey.currentState.validate()) {
@@ -125,6 +132,71 @@ class StylistController extends GetxController {
       _isLoading = false;
       update();
       throw e;
+    }
+  }
+
+  Future getImage() async {
+    await _picker
+        .pickFiles(
+      type: FileType.image,
+      allowMultiple: true,
+      allowCompression: true,
+    )
+        .then((pickerResult) {
+      if (pickerResult != null) {
+        _images.addAll(pickerResult.paths.map((path) => File(path)).toList());
+        print("********************* $_images **************************");
+        if (_images.length > _maxNumFilesAllowed) {
+          _images.sublist(0, 5);
+          Fluttertoast.showToast(msg: "You can select a maximum of 5 images");
+          print("********************* $_images **************************");
+        }
+      } else {
+        Fluttertoast.showToast(msg: "No image selected");
+      }
+    }).catchError((error) {
+      print(error.toString());
+      if (error.runtimeType == PlatformException) {
+        switch (error.code) {
+          case "read_external_storage_denied":
+            Fluttertoast.showToast(msg: "Storage permission denied");
+            break;
+          default:
+            Fluttertoast.showToast(msg: "Something went wrong");
+        }
+      } else {
+        print(
+            "********************************** ${error.toString()} *************************************");
+        Fluttertoast.showToast(msg: "No file selected");
+      }
+    });
+  }
+
+  Future<dynamic> uploadPhotos(String serviceID) async {
+    try {
+      print(_images);
+      if (_images != null && _images.isNotEmpty) {
+        List<String> photoDownloadUrls = [];
+        _images.forEach((imageFile) async {
+          firebase_storage.TaskSnapshot taskSnapshot = await storage
+              .ref()
+              .child("stylists/${serviceID}__${basename(imageFile.path)}")
+              .putFile(imageFile);
+
+          taskSnapshot.ref.getDownloadURL().then((url) {
+            print("Image sent");
+            photoDownloadUrls.add(url);
+            //insert url to database
+          }).catchError((error) {
+            //
+          });
+        });
+      } else {
+        print("No photo found");
+      }
+    } on PlatformException catch (e) {
+      print(e.message);
+      return e;
     }
   }
 }
