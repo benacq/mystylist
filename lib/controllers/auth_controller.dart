@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:my_stylist/screens/customers/customer_navigation.dart';
 import 'package:my_stylist/screens/onboarding/onboarding.dart';
 import 'package:my_stylist/screens/stylist/stylist_navigation.dart';
+import 'package:my_stylist/services/auth_service.dart';
 import '../utils/message_consts.dart' as Constants;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,6 +20,8 @@ class AuthController extends GetxController {
   static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection("Users");
+
+  AuthService _authService = new AuthService();
 
   Rx<User> _firebaseUser = Rx<User>();
   String _email;
@@ -80,69 +83,11 @@ class AuthController extends GetxController {
   }
 
   Future<bool> changeEmail(newEmail) async {
-    return _firebaseAuth.currentUser.updateEmail(newEmail).then((value) {
-      messageSnackbar(
-          title: "Email updated",
-          message: "Your email has been changed",
-          colorText: Color.fromRGBO(66, 201, 152, 1));
-      return true;
-    }).catchError((error) {
-      switch (error?.code) {
-        case "invalid-email":
-          messageSnackbar(
-              title: "Invalid email", message: "This email is invalid");
-          break;
-        case "email-already-in-use":
-          messageSnackbar(
-              title: "Email exist", message: "This email is already in use");
-          break;
-        case "requires-recent-login":
-          messageSnackbar(
-              title: "Requires recent Login",
-              duration: Duration(seconds: 5),
-              message:
-                  "Operation requires recent login, please Logout and Log back in to proceed");
-          // Future.delayed(
-          //     new Duration(seconds: 8), () => {_firebaseAuth.signOut()});
-          break;
-        default:
-          messageSnackbar(
-              title: "Error",
-              message: "Something went wrong, please try again later");
-      }
-      return false;
-    });
+    return _authService.changeEmail(newEmail);
   }
 
   Future changePassword(newPassword) async {
-    _firebaseAuth.currentUser
-        .updatePassword(newPassword)
-        .then((value) => messageSnackbar(
-            title: "Password updated",
-            message: "Your password has been updated",
-            colorText: Color.fromRGBO(66, 201, 152, 1)))
-        .catchError((error) {
-      switch (error?.code) {
-        case "weak-password":
-          messageSnackbar(
-              title: "Password too weak",
-              message: "Please enter a stronger password");
-          break;
-        case "requires-recent-login":
-          messageSnackbar(
-              title: "Requires recent Login",
-              duration: Duration(seconds: 5),
-              message:
-                  "Operation requires recent login, please Login to proceed");
-          Future.delayed(
-              new Duration(seconds: 8), () => {_firebaseAuth.signOut()});
-          break;
-        default:
-          messageSnackbar(
-              title: "Error",
-              message: "Something went wrong, please try again later");
-      }
-    });
+    return _authService.changePassword(newPassword);
   }
 
   void onSignIn() async {
@@ -230,6 +175,8 @@ class AuthController extends GetxController {
                 {_isLoading = false, update(), Get.offAll(OnboardingScreen())});
       }).timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
     } on TimeoutException catch (_) {
+      _isLoading = false;
+      update();
       messageSnackbar(
           title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MESSAGE);
     } on FirebaseAuthException catch (e) {
