@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_stylist/utils/colors.dart';
 import 'package:my_stylist/utils/responsive.dart';
 
 class ReusableButton extends StatelessWidget {
@@ -13,6 +14,7 @@ class ReusableButton extends StatelessWidget {
       width: screenWidth(context, 1),
       child: RaisedButton(
         onPressed: onpress,
+        color: UiColors.color8,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(6),
         ),

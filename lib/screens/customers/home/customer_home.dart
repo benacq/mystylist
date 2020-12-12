@@ -64,8 +64,8 @@ class CustomerHome extends StatelessWidget {
                         style: GoogleFonts.lato(
                           textStyle: TextStyle(
                             color: UiColors.color3,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 25.0,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20.0,
                           ),
                         ),
                       ),
@@ -83,7 +83,7 @@ class CustomerHome extends StatelessWidget {
                         style: GoogleFonts.lato(
                           textStyle: TextStyle(
                             color: UiColors.color3,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             fontSize: 20.0,
                           ),
                         ),

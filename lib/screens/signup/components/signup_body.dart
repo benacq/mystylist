@@ -32,7 +32,7 @@ class SignUpBody extends GetWidget<AuthController> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                color: UiColors.color3,
+                color: UiColors.color1,
               ),
               SizedBox(
                 height: screenHeight(context, 0.15),
@@ -40,7 +40,7 @@ class SignUpBody extends GetWidget<AuthController> {
               Text(
                 'Create \nAccount',
                 style: TextStyle(
-                  color: UiColors.color3,
+                  color: UiColors.color1,
                   fontSize: 30.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -55,14 +55,14 @@ class SignUpBody extends GetWidget<AuthController> {
                     TextFormField(
                       validator: (email) =>
                           ValidationService.validateEmail(email),
-                      style: TextStyle(color: UiColors.color3),
+                      style: TextStyle(color: UiColors.color1),
                       keyboardType: TextInputType.emailAddress,
                       onSaved: (email) => controller.setEmail = email,
                       decoration: buildInputDecoration(
                         label: 'Email',
                         picon: Icon(
                           Icons.email,
-                          color: UiColors.color3,
+                          color: UiColors.color1,
                         ),
                       ),
                     ),
@@ -73,7 +73,7 @@ class SignUpBody extends GetWidget<AuthController> {
                         init: AuthController(),
                         builder: (_) {
                           return TextFormField(
-                            style: TextStyle(color: UiColors.color3),
+                            style: TextStyle(color: UiColors.color1),
                             validator: (password) =>
                                 ValidationService.validatePassword(password),
                             obscureText: _.isPasswordMasked,
@@ -83,7 +83,7 @@ class SignUpBody extends GetWidget<AuthController> {
                               label: 'Password',
                               picon: Icon(
                                 Icons.lock,
-                                color: UiColors.color3,
+                                color: UiColors.color1,
                               ),
                               sicon: IconButton(
                                 onPressed: () => _.togglePasswordMask(),
@@ -91,7 +91,7 @@ class SignUpBody extends GetWidget<AuthController> {
                                   _.isPasswordMasked
                                       ? Icons.visibility
                                       : Icons.visibility_off,
-                                  color: UiColors.color3,
+                                  color: UiColors.color1,
                                   size: 23.0,
                                 ),
                               ),
@@ -105,7 +105,14 @@ class SignUpBody extends GetWidget<AuthController> {
                         init: AuthController(),
                         builder: (_) {
                           return ReusableButton(
-                            label: _.isLoading ? loader : Text('Sign Up'),
+                            label: _.isLoading
+                                ? loader
+                                : Text(
+                                    'Sign Up',
+                                    style: TextStyle(
+                                      color: UiColors.color1,
+                                    ),
+                                  ),
                             onpress: () => controller.onSignUp(),
                           );
                         }),

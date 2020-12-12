@@ -40,3 +40,5 @@ const String PREF_KEY_CUST_LOCATION = "customer_location";
 const String PREF_KEY_BUSS_NAME = "business_name";
 const String PREF_KEY_BUSS_CONTACT = "business_contact";
 const String PREF_KEY_BUSS_LOCATION = "business_location";
+const String PREF_KEY_REGION = "region";
+

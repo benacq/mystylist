@@ -46,7 +46,7 @@ class _CustomerNavigationState extends State<CustomerNavigation> {
                 .asMap()
                 .map((i, icon) {
                   bool active = i == currentIndex;
-                  final color = active ? UiColors.color3 : Color(0Xff999999);
+                  final color = active ? UiColors.color8 : Color(0Xff999999);
                   Widget button;
 
                   button = Column(
@@ -62,7 +62,7 @@ class _CustomerNavigationState extends State<CustomerNavigation> {
                               width: 10,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: UiColors.color3,
+                                color: UiColors.color8,
                               ),
                             )
                           : Text(

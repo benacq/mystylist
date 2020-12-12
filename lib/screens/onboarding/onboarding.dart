@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:my_stylist/controllers/location_controller.dart';
 import 'package:my_stylist/controllers/onboarding_controller.dart';
 import 'package:my_stylist/screens/onboarding/components/pages.dart';
 import 'package:my_stylist/utils/responsive.dart';
@@ -18,6 +20,7 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final OnboardingController _onboardingController =
       Get.put(OnboardingController());
+  final LocationController locationController = Get.put(LocationController());
 
   final int _numPages = 3;
 
@@ -31,9 +34,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return list;
   }
 
+  getLocation() async {
+    try {
+      await locationController.getUserLocation();
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'An unknown error occured');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    getLocation();
   }
 
   @override
@@ -82,8 +94,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               ? Padding(
                                   padding: const EdgeInsets.all(35.0),
                                   child: FlatButton(
-                                    onPressed: () => _onboardingController
-                                        .validatePageViewFirstPage(),
+                                    onPressed: () {
+                                      _onboardingController
+                                          .validatePageViewFirstPage(
+                                        locationController.latitude,
+                                        locationController.longitude,
+                                      );
+                                    },
                                     color: Color(0xffDEDEDE),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(6),
@@ -159,7 +176,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                               );
                                             } else {
                                               _onboardingController
-                                                  .validatePageViewLastPage();
+                                                  .validatePageViewLastPage(
+                                                locationController.latitude,
+                                                locationController.longitude,
+                                              );
                                             }
                                           },
                                           color: Color(0xffDEDEDE),

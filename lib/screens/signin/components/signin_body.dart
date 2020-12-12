@@ -28,7 +28,7 @@ class SignInBody extends GetWidget<AuthController> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                color: UiColors.color3,
+                color: UiColors.color1,
               ),
               SizedBox(
                 height: screenHeight(context, 0.15),
@@ -36,7 +36,7 @@ class SignInBody extends GetWidget<AuthController> {
               Text(
                 'Welcome \nBack',
                 style: TextStyle(
-                  color: UiColors.color3,
+                  color: UiColors.color1,
                   fontSize: 30.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -49,7 +49,7 @@ class SignInBody extends GetWidget<AuthController> {
                 child: Column(
                   children: [
                     TextFormField(
-                      style: TextStyle(color: UiColors.color3),
+                      style: TextStyle(color: UiColors.color1),
                       keyboardType: TextInputType.emailAddress,
                       onSaved: (email) => controller.setEmail = email,
                       validator: (email) =>
@@ -58,7 +58,7 @@ class SignInBody extends GetWidget<AuthController> {
                         label: 'Email',
                         picon: Icon(
                           Icons.email,
-                          color: UiColors.color3,
+                          color: UiColors.color1,
                         ),
                       ),
                     ),
@@ -69,7 +69,7 @@ class SignInBody extends GetWidget<AuthController> {
                         init: AuthController(),
                         builder: (_) {
                           return TextFormField(
-                            style: TextStyle(color: UiColors.color3),
+                            style: TextStyle(color: UiColors.color1),
                             validator: (password) => password.isEmpty
                                 ? "Please enter your password"
                                 : null,
@@ -80,7 +80,7 @@ class SignInBody extends GetWidget<AuthController> {
                               label: 'Password',
                               picon: Icon(
                                 Icons.lock,
-                                color: UiColors.color3,
+                                color: UiColors.color1,
                               ),
                               sicon: IconButton(
                                 onPressed: () => _.togglePasswordMask(),
@@ -102,7 +102,14 @@ class SignInBody extends GetWidget<AuthController> {
                         init: AuthController(),
                         builder: (_) {
                           return ReusableButton(
-                            label: _.isLoading ? loader : Text('Sign In'),
+                            label: _.isLoading
+                                ? loader
+                                : Text(
+                                    'Sign In',
+                                    style: TextStyle(
+                                      color: UiColors.color1,
+                                    ),
+                                  ),
                             onpress: () => controller.onSignIn(),
                           );
                         }),

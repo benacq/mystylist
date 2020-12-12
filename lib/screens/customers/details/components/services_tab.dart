@@ -54,13 +54,13 @@ class ServicesTab extends StatelessWidget {
                 itemCount: serviceList.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: Container(
                       width: screenWidth(context, 1),
-                      height: screenHeight(context, 0.1),
+                      height: screenHeight(context, 0.08),
                       decoration: BoxDecoration(
                         border: Border(
-                          bottom: BorderSide(color: UiColors.color4),
+                          bottom: BorderSide(color: Color(0xffD6D6D6)),
                         ),
                       ),
                       child: Padding(
@@ -110,7 +110,7 @@ class ServicesTab extends StatelessWidget {
                             ),
                             RaisedButton(
                               onPressed: () {},
-                              color: UiColors.color3,
+                              color: UiColors.color8,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6),
                               ),

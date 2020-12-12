@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/route_manager.dart';
+import 'package:my_stylist/controllers/location_controller.dart';
 import 'package:my_stylist/screens/customers/customer_navigation.dart';
 import 'package:my_stylist/screens/stylist/stylist_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,6 +42,7 @@ class OnboardingController extends GetxController {
   String _businessName;
   String _businessContact;
   String _businessLocation;
+  String _region;
 
   // getters
   SharedPreferences get preferences => _prefs;
@@ -55,6 +58,7 @@ class OnboardingController extends GetxController {
   String get businessName => _businessName;
   String get businessContact => _businessContact;
   String get businessLocation => _businessLocation;
+  String get region => _region;
 
   set setCurrentPage(int page) {
     if (page != null) {
@@ -73,6 +77,13 @@ class OnboardingController extends GetxController {
   set setAccountType(String account) {
     if (account != null) {
       _accountType = account;
+    }
+    return;
+  }
+
+  set setRegion(String selectedRegion) {
+    if (region != null) {
+      _region = region;
     }
     return;
   }
@@ -160,9 +171,13 @@ class OnboardingController extends GetxController {
     }
   }
 
-  void validatePageViewFirstPage() {
+  void validatePageViewFirstPage(latitude, longitude) {
     if (pv1FormKey.currentState.validate()) {
       pv1FormKey.currentState.save();
+      if (latitude == null || longitude == null) {
+        Fluttertoast.showToast(
+            msg: 'Please give the app access to your location');
+      }
       pageController.nextPage(
         duration: Duration(milliseconds: 500),
         curve: Curves.ease,
@@ -170,13 +185,14 @@ class OnboardingController extends GetxController {
     }
   }
 
-  void validatePageViewLastPage() {
+  void validatePageViewLastPage(latitude, longitude) {
     if (pv2FormKey.currentState.validate()) {
       pv2FormKey.currentState.save();
 
       if (accountType == "I am a Beautician") {
         // User is a beautician
-        createBusiness().whenComplete(() => removePreferences());
+        createBusiness(latitude, longitude)
+            .whenComplete(() => removePreferences());
       } else {
         createCustomer().whenComplete(() => removePreferences());
         // User is a customer
@@ -184,7 +200,7 @@ class OnboardingController extends GetxController {
     }
   }
 
-  Future<void> createBusiness() async {
+  Future<void> createBusiness(latitude, longitude) async {
     _isLoading = true;
     update();
     try {
@@ -193,7 +209,10 @@ class OnboardingController extends GetxController {
         "business_name": _businessName,
         "account_type": "business",
         "contact": _businessContact,
+        "region": _region,
         "location": _businessLocation,
+        "latitude": latitude,
+        "longitude": longitude,
       }).whenComplete(() {
         _isLoading = false;
         update();
