@@ -8,27 +8,35 @@ class StylistModel {
   String location;
   bool featured;
   String accountType;
+  var longitude;
+  var latitude;
   DocumentReference stylistRef;
 
-  StylistModel(
-      {this.businessName,
-      this.ownerFullName,
-      this.email,
-      this.contact,
-      this.location,
-      this.featured,
-      this.stylistRef,
-      this.accountType});
+  StylistModel({
+    this.businessName,
+    this.ownerFullName,
+    this.email,
+    this.contact,
+    this.location,
+    this.featured,
+    this.stylistRef,
+    this.accountType,
+    this.latitude,
+    this.longitude,
+  });
 
   factory StylistModel.fromSnapshot(QueryDocumentSnapshot stylistData) {
     return StylistModel(
-        stylistRef: stylistData.reference,
-        businessName: stylistData.data()['business_name'],
-        ownerFullName: stylistData.data()['user_fullname'],
-        email: stylistData.data()['email'],
-        contact: stylistData.data()['contact'],
-        location: stylistData.data()['location'],
-        featured: stylistData.data()['featured'],
-        accountType: stylistData.data()['account_type']);
+      stylistRef: stylistData.reference,
+      businessName: stylistData.data()['business_name'],
+      ownerFullName: stylistData.data()['user_fullname'],
+      email: stylistData.data()['email'],
+      contact: stylistData.data()['contact'],
+      location: stylistData.data()['location'],
+      featured: stylistData.data()['featured'],
+      accountType: stylistData.data()['account_type'],
+      latitude: stylistData.data()['latitude'],
+      longitude: stylistData.data()['longitude'],
+    );
   }
 }

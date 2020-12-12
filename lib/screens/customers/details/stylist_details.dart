@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_stylist/models/stylist_model.dart';
+import 'package:my_stylist/screens/customers/details/components/bottomsheet_map.dart';
 import 'package:my_stylist/screens/customers/details/components/gallery_tab.dart';
 import 'package:my_stylist/screens/customers/details/components/services_tab.dart';
+import 'package:my_stylist/screens/customers/home/components/featured_stylists.dart';
 import 'package:my_stylist/utils/colors.dart';
 import 'package:my_stylist/utils/responsive.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 enum CustomTab { services, gallery }
 
@@ -51,7 +54,7 @@ class _StylistDetailsState extends State<StylistDetails> {
                           IconButton(
                             icon: Icon(
                               Icons.arrow_back,
-                              color: UiColors.color3,
+                              color: UiColors.color1,
                             ),
                             onPressed: () {
                               Navigator.pop(context);
@@ -60,12 +63,12 @@ class _StylistDetailsState extends State<StylistDetails> {
                           Spacer(),
                           CircleAvatar(
                             radius: 20,
-                            backgroundColor: UiColors.color3,
+                            backgroundColor: UiColors.color1,
                             child: Center(
                               child: IconButton(
                                 icon: Icon(
                                   Icons.favorite_border,
-                                  color: Color(0xff000000),
+                                  color: UiColors.color3,
                                 ),
                                 onPressed: () {},
                               ),
@@ -82,44 +85,75 @@ class _StylistDetailsState extends State<StylistDetails> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.featuredStylists.businessName,
-                      style: GoogleFonts.lato(
-                        textStyle: TextStyle(
-                          color: UiColors.color3,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20.0,
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.featuredStylists.businessName,
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(
+                                  color: UiColors.color3,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: screenHeight(context, 0.002),
+                            ),
+                            Text(
+                              widget.featuredStylists.contact,
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(
+                                  color: UiColors.color4,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15.0,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: screenHeight(context, 0.002),
+                            ),
+                            Text(
+                              widget.featuredStylists.location,
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(
+                                  color: UiColors.color4,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15.0,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
+                        Spacer(),
+                        OutlineButton(
+                          onPressed: () {
+                            buildShowModalBottomSheet(
+                                context, widget.featuredStylists);
+                          },
+                          child: Text(
+                            'Show Location',
+                            style: GoogleFonts.lato(
+                              textStyle: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 16,
+                                color: UiColors.color8,
+                              ),
+                            ),
+                          ),
+                          borderSide:
+                              BorderSide(color: Color(0xFFADADAD), width: 1.4),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
-                      height: screenHeight(context, 0.002),
-                    ),
-                    Text(
-                      widget.featuredStylists.contact,
-                      style: GoogleFonts.lato(
-                        textStyle: TextStyle(
-                          color: UiColors.color4,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15.0,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: screenHeight(context, 0.002),
-                    ),
-                    Text(
-                      widget.featuredStylists.location,
-                      style: GoogleFonts.lato(
-                        textStyle: TextStyle(
-                          color: UiColors.color4,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15.0,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: screenHeight(context, 0.03),
+                      height: screenHeight(context, 0.02),
                     ),
                     Row(
                       children: [
@@ -149,7 +183,7 @@ class _StylistDetailsState extends State<StylistDetails> {
                                   ? Container(
                                       height: screenHeight(context, 0.003),
                                       width: screenWidth(context, 0.13),
-                                      color: UiColors.color3,
+                                      color: UiColors.color8,
                                     )
                                   : Container(),
                             ],
@@ -184,7 +218,7 @@ class _StylistDetailsState extends State<StylistDetails> {
                                   ? Container(
                                       height: screenHeight(context, 0.003),
                                       width: screenWidth(context, 0.13),
-                                      color: UiColors.color3,
+                                      color: UiColors.color8,
                                     )
                                   : Container(),
                             ],
@@ -193,7 +227,7 @@ class _StylistDetailsState extends State<StylistDetails> {
                       ],
                     ),
                     SizedBox(
-                      height: screenHeight(context, 0.03),
+                      height: screenHeight(context, 0.01),
                     ),
                     customTab == CustomTab.services
                         ? ServicesTab(
@@ -209,3 +243,4 @@ class _StylistDetailsState extends State<StylistDetails> {
     );
   }
 }
+

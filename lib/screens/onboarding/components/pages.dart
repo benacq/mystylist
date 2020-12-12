@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_stylist/controllers/onboarding_controller.dart';
 import 'package:my_stylist/controllers/validation_controller.dart';
+import 'package:my_stylist/models/regions_model.dart';
 import 'package:my_stylist/screens/onboarding/components/page_header.dart';
 import 'package:my_stylist/screens/reusablecomponents/label.dart';
 import 'package:my_stylist/screens/reusablecomponents/label_seperator.dart';
@@ -14,17 +15,33 @@ import '../../../utils/message_consts.dart' as Constants;
 
 import 'package:my_stylist/utils/responsive.dart';
 
-class OnboardingPageView extends StatelessWidget {
+class OnboardingPageView extends StatefulWidget {
+  final SharedPreferences prefs;
+  OnboardingPageView({this.prefs});
+
+  @override
+  _OnboardingPageViewState createState() => _OnboardingPageViewState();
+}
+
+class _OnboardingPageViewState extends State<OnboardingPageView> {
   final OnboardingController _onboardingController =
       Get.put(OnboardingController());
+
+  String selectedRegion = 'Greater Accra';
+  List<DropdownMenuItem> getDRopDownItems() {
+    List<DropdownMenuItem<String>> dropdownItems = [];
+    for (String region in regionList) {
+      var newItem = DropdownMenuItem(child: Text(region), value: region);
+      dropdownItems.add(newItem);
+    }
+    return dropdownItems;
+  }
 
   final List<String> _accountTypes = [
     'I am a Beautician',
     'I am a Customer',
   ];
 
-  final SharedPreferences prefs;
-  OnboardingPageView({this.prefs});
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OnboardingController>(builder: (pageTracker) {
@@ -62,8 +79,8 @@ class OnboardingPageView extends StatelessWidget {
                     key: OnboardingController.pv1FormKey,
                     child: TextFormField(
                       style: TextStyle(color: UiColors.color3),
-                      onChanged: (fullName) => prefs.setString(
-                          Constants.PREF_KEY_FULLNAME, fullName),
+                      onChanged: (fullName) => widget.prefs
+                          .setString(Constants.PREF_KEY_FULLNAME, fullName),
                       initialValue: pageTracker.userFullName,
                       validator: (name) {
                         if (name.isEmpty) {
@@ -90,28 +107,65 @@ class OnboardingPageView extends StatelessWidget {
                 children: [
                   OnboardingHeader(
                     txt:
-                        'Hello ${pageTracker.userFullName}, what best describes your purpose of joining this platform?',
+                        'Hello ${pageTracker.userFullName}, which region are you in and what best describes your purpose of joining this platform a?',
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   GetBuilder<OnboardingController>(builder: (pageTracker) {
-                    return DropdownButtonFormField(
-                      style: TextStyle(color: UiColors.color3),
-                      value: pageTracker.accountType,
-                      onChanged: (accountType) {
-                        prefs.setString(
-                            Constants.PREF_KEY_ACC_TYPE, accountType);
-                        pageTracker.setAccountType = accountType;
-                      },
-                      items: _accountTypes.map<DropdownMenuItem>((value) {
-                        return DropdownMenuItem(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      decoration:
-                          textInputDecoration(hint: 'I am joining as...'),
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Label(
+                          labeltext: 'Purpose of joining',
+                        ),
+                        LabelSeperator(),
+                        Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: UiColors.color1,
+                          ),
+                          child: DropdownButtonFormField(
+                            style: TextStyle(color: UiColors.color3),
+                            value: pageTracker.accountType,
+                            onChanged: (accountType) {
+                              widget.prefs.setString(
+                                  Constants.PREF_KEY_ACC_TYPE, accountType);
+                              pageTracker.setAccountType = accountType;
+                            },
+                            items: _accountTypes.map<DropdownMenuItem>((value) {
+                              return DropdownMenuItem(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            decoration:
+                                textInputDecoration(hint: 'I am joining as...'),
+                          ),
+                        ),
+                        TextboxSeperator(),
+                        Label(
+                          labeltext: 'Region',
+                        ),
+                        LabelSeperator(),
+                        Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: UiColors.color1,
+                          ),
+                          child: DropdownButtonFormField(
+                            style: TextStyle(color: UiColors.color3),
+                            value: selectedRegion,
+                            items: getDRopDownItems(),
+                            onChanged: (region) {
+                              widget.prefs
+                                  .setString(Constants.PREF_KEY_REGION, region);
+                            },
+                            onSaved: (region) => _onboardingController
+                                .setRegion = selectedRegion,
+                            decoration:
+                                textInputDecoration(hint: 'Select a region.'),
+                          ),
+                        ),
+                      ],
                     );
                   }),
                 ],
@@ -141,7 +195,8 @@ class OnboardingPageView extends StatelessWidget {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: (custContact) => prefs.setString(
+                                onChanged: (custContact) =>
+                                    widget.prefs.setString(
                                   Constants.PREF_KEY_CUST_CONTACT,
                                   custContact,
                                 ),
@@ -163,9 +218,9 @@ class OnboardingPageView extends StatelessWidget {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: (custLocation) => prefs.setString(
-                                    Constants.PREF_KEY_CUST_LOCATION,
-                                    custLocation),
+                                onChanged: (custLocation) => widget.prefs
+                                    .setString(Constants.PREF_KEY_CUST_LOCATION,
+                                        custLocation),
                                 initialValue: pageTracker.customerLocation,
                                 onSaved: (customerLocation) =>
                                     _onboardingController.setCustomerLocation =
@@ -203,8 +258,9 @@ class OnboardingPageView extends StatelessWidget {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: (businessName) => prefs.setString(
-                                    Constants.PREF_KEY_BUSS_NAME, businessName),
+                                onChanged: (businessName) => widget.prefs
+                                    .setString(Constants.PREF_KEY_BUSS_NAME,
+                                        businessName),
                                 initialValue: pageTracker.businessName,
                                 validator: (businessName) =>
                                     businessName.isEmpty
@@ -223,9 +279,9 @@ class OnboardingPageView extends StatelessWidget {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: (businessContact) => prefs.setString(
-                                    Constants.PREF_KEY_BUSS_CONTACT,
-                                    businessContact),
+                                onChanged: (businessContact) => widget.prefs
+                                    .setString(Constants.PREF_KEY_BUSS_CONTACT,
+                                        businessContact),
                                 initialValue: pageTracker.businessContact,
                                 validator: (phone) =>
                                     ValidationService.validatePhone(phone),
@@ -244,7 +300,7 @@ class OnboardingPageView extends StatelessWidget {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: (location) => prefs.setString(
+                                onChanged: (location) => widget.prefs.setString(
                                     Constants.PREF_KEY_BUSS_LOCATION, location),
                                 initialValue: pageTracker.businessLocation,
                                 validator: (location) =>

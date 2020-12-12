@@ -79,7 +79,7 @@ class AddServiceform extends StatelessWidget {
           ),
           GetBuilder<StylistController>(builder: (_) {
             return ReusableButton(
-                label: _.isLoading ? loader : Text('Add Service'),
+                label: _.isLoading ? loader : Text('Add Service',style: TextStyle(color: UiColors.color1),),
                 onpress: () {
                   stylistController.addService();
                   print(_.isLoading);

@@ -10,12 +10,12 @@ InputDecoration buildInputDecoration({
       labelText: label,
       prefixIcon: picon,
       suffixIcon: sicon,
-      labelStyle: TextStyle(color: UiColors.color3),
+      labelStyle: TextStyle(color: UiColors.color1),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(10)),
         borderSide: BorderSide(
           width: 0.6,
-          color: UiColors.color3,
+          color: UiColors.color1,
         ),
       ),
       disabledBorder: OutlineInputBorder(

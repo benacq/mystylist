@@ -40,7 +40,12 @@ class _StylistAccountState extends State<StylistAccount> {
           future: SharedController().getStylistData,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Center(child: Constants.LOADER);
+              // return Center(child: Constants.LOADER);
+               return Center(
+                child: LogoutButton(
+                  logout: () => AuthController.signOut(),
+                ),
+              );
             }
             StylistModel stylistModel = snapshot.data;
             return SingleChildScrollView(
