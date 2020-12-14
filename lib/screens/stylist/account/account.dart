@@ -41,7 +41,7 @@ class _StylistAccountState extends State<StylistAccount> {
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               // return Center(child: Constants.LOADER);
-               return Center(
+              return Center(
                 child: LogoutButton(
                   logout: () => AuthController.signOut(),
                 ),
@@ -145,11 +145,11 @@ class _StylistAccountState extends State<StylistAccount> {
                                                 .validate()) {
                                               passwordFormkey.currentState
                                                   .save();
-                                              AuthController()
-                                                  .changePassword(password)
-                                                  .whenComplete(() =>
-                                                      Navigator.of(context)
-                                                          .pop());
+                                              // AuthController()
+                                              //     .changePassword(password)
+                                              //     .whenComplete(() =>
+                                              //         Navigator.of(context)
+                                              //             .pop());
                                             }
                                             return;
                                           },
