@@ -68,20 +68,20 @@ class _AccountFieldsState extends State<StylistAccountFields> {
                   if (formState.validate()) {
                     formState.save();
                     if (!email.isNull && email != widget.model.email) {
-                      AuthController().changeEmail(email).then((value) {
-                        if (value) {
-                          state
-                              .updateSingleData(0, "email", email)
-                              .then((value) {
-                            if (value == true) {
-                              Fluttertoast.showToast(msg: "Updated");
-                              return;
-                            }
-                          });
-                          return;
-                        }
-                        state.setIsEnabled(0, !state.isEnabled[0]);
-                      });
+                      // AuthController().changeEmail(email).then((value) {
+                      //   if (value) {
+                      //     state
+                      //         .updateSingleData(0, "email", email)
+                      //         .then((value) {
+                      //       if (value == true) {
+                      //         Fluttertoast.showToast(msg: "Updated");
+                      //         return;
+                      //       }
+                      //     });
+                      //     return;
+                      //   }
+                      //   state.setIsEnabled(0, !state.isEnabled[0]);
+                      // });
                     } else {
                       state.setIsEnabled(0, !state.isEnabled[0]);
                     }

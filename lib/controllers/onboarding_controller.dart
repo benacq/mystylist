@@ -227,7 +227,7 @@ class OnboardingController extends GetxController {
       _isLoading = false;
       update();
       errorSnackBar(
-          title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MESSAGE);
+          title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MSG);
     }
   }
 
@@ -254,7 +254,7 @@ class OnboardingController extends GetxController {
       _isLoading = false;
       update();
       errorSnackBar(
-          title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MESSAGE);
+          title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MSG);
     }
   }
 }
