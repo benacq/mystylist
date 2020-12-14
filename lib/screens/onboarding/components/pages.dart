@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_stylist/controllers/onboarding_controller.dart';
@@ -311,6 +314,22 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                                         businessLocation,
                                 decoration: textInputDecoration(
                                   hint: 'Abrepo Junction',
+                                ),
+                              ),
+                              SizedBox(height:5),
+                              Center(
+                                child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {},
+                                      child: Text(
+                                        'Upload a banner',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ),
+                                    Icon(FontAwesome.image, color: UiColors.color8,),
+                                  ],
                                 ),
                               ),
                             ],

@@ -172,7 +172,7 @@ class AuthController extends GetxController {
           .then((newUser) {
         userCollection.doc(newUser.user.uid).set({"email": _email}).then(
             (value) =>
-                {_isLoading = false, update(), Get.offAll(OnboardingScreen())});
+                {_isLoading = false, update(), Get.to(SignIn())});
       }).timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
     } on TimeoutException catch (_) {
       _isLoading = false;

@@ -81,8 +81,9 @@ class AuthService {
           break;
         default:
           messageSnackbar(
-              title: "Error",
-              message: "Something went wrong, please try again later");
+            title: "Error",
+            message: "Something went wrong, please try again later",
+          );
       }
     });
   }

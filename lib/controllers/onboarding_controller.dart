@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/route_manager.dart';
-import 'package:my_stylist/controllers/location_controller.dart';
 import 'package:my_stylist/screens/customers/customer_navigation.dart';
 import 'package:my_stylist/screens/stylist/stylist_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -257,4 +256,5 @@ class OnboardingController extends GetxController {
           title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MESSAGE);
     }
   }
+  
 }
