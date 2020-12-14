@@ -3,10 +3,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:my_stylist/controllers/auth_controller.dart';
 import 'package:my_stylist/controllers/location_controller.dart';
 import 'package:my_stylist/controllers/onboarding_controller.dart';
 import 'package:my_stylist/screens/onboarding/components/pages.dart';
-import 'package:my_stylist/screens/signin/sign_in.dart';
 import 'package:my_stylist/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/colors.dart';
@@ -22,7 +22,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final OnboardingController _onboardingController =
       Get.put(OnboardingController());
   final LocationController locationController = Get.put(LocationController());
-
   final int _numPages = 3;
 
   List<Widget> _buildPageIndicator() {
@@ -58,7 +57,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           TextButton(
             onPressed: () async {
               _onboardingController.removePreferences();
-              Get.offAll(SignIn());
+              AuthController.signOut();
             },
             child: Text(
               'Confirm',
