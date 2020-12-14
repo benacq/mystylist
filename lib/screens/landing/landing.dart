@@ -55,9 +55,9 @@ class Landing extends GetWidget<AuthController> {
   }
 
   Widget checkAccountType(dynamic status) {
-    if (status == Constants.USER_ACCOUNT_BUSINESS) {
+    if (status == Constants.ACCOUNT_BUSINESS) {
       return StylistNavigation();
-    } else if (status == Constants.USER_ACCOUNT_CUSTOMER) {
+    } else if (status == Constants.ACCOUNT_CUSTOMER) {
       return CustomerNavigation();
     } else {
       return OnboardingScreen();

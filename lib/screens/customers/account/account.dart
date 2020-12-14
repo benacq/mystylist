@@ -116,11 +116,12 @@ class _AccountState extends State<Account> {
                                                 .validate()) {
                                               passwordFormkey.currentState
                                                   .save();
-                                              AuthController()
-                                                  .changePassword(password)
-                                                  .whenComplete(() =>
-                                                      Navigator.of(context)
-                                                          .pop());
+
+                                              // AuthController()
+                                              //     .changePassword(password)
+                                              //     .whenComplete(() =>
+                                              //         Navigator.of(context)
+                                              //             .pop());
                                             }
                                             return;
                                           },

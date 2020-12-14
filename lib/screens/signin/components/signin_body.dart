@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:my_stylist/controllers/auth_controller.dart';
@@ -14,6 +15,8 @@ class SignInBody extends GetWidget<AuthController> {
     color: Colors.blueAccent,
     size: 35.0,
   );
+
+  final AuthController authController = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -65,54 +68,53 @@ class SignInBody extends GetWidget<AuthController> {
                     SizedBox(
                       height: screenHeight(context, 0.02),
                     ),
-                    GetBuilder<AuthController>(
-                        init: AuthController(),
-                        builder: (_) {
-                          return TextFormField(
-                            style: TextStyle(color: UiColors.color1),
-                            validator: (password) => password.isEmpty
-                                ? "Please enter your password"
-                                : null,
-                            onSaved: (password) =>
-                                controller.setPassword = password,
-                            obscureText: _.isPasswordMasked,
-                            decoration: buildInputDecoration(
-                              label: 'Password',
-                              picon: Icon(
-                                Icons.lock,
-                                color: UiColors.color1,
-                              ),
-                              sicon: IconButton(
-                                onPressed: () => _.togglePasswordMask(),
-                                icon: Icon(
-                                  _.isPasswordMasked
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: UiColors.color3,
-                                  size: 23.0,
-                                ),
-                              ),
+                    GetBuilder<AuthController>(builder: (_) {
+                      return TextFormField(
+                        style: TextStyle(color: UiColors.color1),
+                        validator: (password) => password.isEmpty
+                            ? "Please enter your password"
+                            : null,
+                        onSaved: (password) =>
+                            controller.setPassword = password,
+                        obscureText: _.isPasswordMasked,
+                        decoration: buildInputDecoration(
+                          label: 'Password',
+                          picon: Icon(
+                            Icons.lock,
+                            color: UiColors.color1,
+                          ),
+                          sicon: IconButton(
+                            onPressed: () => _.togglePasswordMask(),
+                            icon: Icon(
+                              _.isPasswordMasked
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: UiColors.color3,
+                              size: 23.0,
                             ),
-                          );
-                        }),
+                          ),
+                        ),
+                      );
+                    }),
                     SizedBox(
                       height: screenHeight(context, 0.02),
                     ),
-                    GetBuilder<AuthController>(
-                        init: AuthController(),
-                        builder: (_) {
-                          return ReusableButton(
-                            label: _.isLoading
-                                ? loader
-                                : Text(
-                                    'Sign In',
-                                    style: TextStyle(
-                                      color: UiColors.color1,
-                                    ),
-                                  ),
-                            onpress: () => controller.onSignIn(),
-                          );
-                        }),
+                    GetBuilder<AuthController>(builder: (_) {
+                      return ReusableButton(
+                        label: _.isLoading
+                            ? loader
+                            : Text(
+                                'Sign In',
+                                style: TextStyle(
+                                  color: UiColors.color1,
+                                ),
+                              ),
+                        onpress: () {
+                          _.getService.setController = authController;
+                          controller.onSignIn();
+                        },
+                      );
+                    }),
                   ],
                 ),
               ),
