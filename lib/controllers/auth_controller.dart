@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:my_stylist/screens/landing/landing.dart';
 import 'package:my_stylist/services/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -104,6 +105,6 @@ class AuthController extends GetxController {
   }
 
   static void signOut() {
-    _firebaseAuth.signOut().then((value) => Get.offAll(SignIn()));
+    _firebaseAuth.signOut().then((value) => Get.offAll(Landing()));
   }
 }

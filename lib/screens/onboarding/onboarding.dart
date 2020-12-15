@@ -6,6 +6,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:my_stylist/controllers/auth_controller.dart';
 import 'package:my_stylist/controllers/location_controller.dart';
 import 'package:my_stylist/controllers/onboarding_controller.dart';
+import 'package:my_stylist/screens/landing/landing.dart';
 import 'package:my_stylist/screens/onboarding/components/pages.dart';
 import 'package:my_stylist/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,7 +58,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           TextButton(
             onPressed: () async {
               _onboardingController.removePreferences();
-              AuthController.signOut();
+              Get.offAll(Landing());
             },
             child: Text(
               'Confirm',
