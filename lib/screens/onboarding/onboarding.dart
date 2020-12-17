@@ -8,6 +8,8 @@ import 'package:my_stylist/controllers/location_controller.dart';
 import 'package:my_stylist/controllers/onboarding_controller.dart';
 import 'package:my_stylist/screens/landing/landing.dart';
 import 'package:my_stylist/screens/onboarding/components/pages.dart';
+import 'package:my_stylist/services/auth_service.dart';
+import 'package:my_stylist/services/onboarding_service.dart';
 import 'package:my_stylist/utils/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/colors.dart';
@@ -57,6 +59,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
           TextButton(
             onPressed: () async {
+              AuthService.signOut();
               _onboardingController.removePreferences();
               Get.offAll(Landing());
             },
@@ -73,7 +76,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-    getLocation();
+    _onboardingController.onboardingService.setController =
+        _onboardingController;
+    // getLocation();
   }
 
   @override
@@ -89,168 +94,134 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           opacity: 0.7,
           child: SafeArea(
             child: Scaffold(
-              backgroundColor: UiColors.color2,
-              body: FutureBuilder<SharedPreferences>(
-                  future: _onboardingController.initialPreference(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Scaffold(
-                        body: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                backgroundColor: UiColors.color2,
+                body: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                            height: screenHeight(context, 0.77),
+                            child: OnboardingPageView()),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Constants.LOADER,
-                            SizedBox(
-                              height: 20.0,
-                            ),
-                            Text("Please wait...")
-                          ],
+                          children: _buildPageIndicator(),
                         ),
-                      );
-                    }
-                    SharedPreferences prefs = snapshot.data;
-                    _onboardingController.setPreferenceValues();
-                    return SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Container(
-                                height: screenHeight(context, 0.74),
-                                child: OnboardingPageView(prefs: prefs)),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: _buildPageIndicator(),
-                            ),
-                            (pageTracker.currentPage == 0)
-                                ? Padding(
-                                    padding: const EdgeInsets.all(35.0),
-                                    child: FlatButton(
-                                      onPressed: () {
-                                        _onboardingController
-                                            .validatePageViewFirstPage(
-                                          locationController.latitude,
-                                          locationController.longitude,
-                                        );
-                                      },
-                                      color: Color(0xffDEDEDE),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 15.0,
-                                          horizontal: 25,
-                                        ),
-                                        child: Text(
-                                          'Next',
-                                          style: GoogleFonts.lato(
-                                            textStyle: TextStyle(
-                                                fontWeight: FontWeight.w900,
-                                                fontSize: 16),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : Padding(
+                        (pageTracker.currentPage == 0)
+                            ? Padding(
+                                padding: const EdgeInsets.all(35.0),
+                                child: FlatButton(
+                                  onPressed: () {
+                                    _onboardingController
+                                        .validatePageViewFirstPage();
+                                  },
+                                  color: Color(0xffDEDEDE),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 35.0, horizontal: 60),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: OutlineButton(
-                                            onPressed: () {
-                                              OnboardingController
-                                                  .pageController
-                                                  .previousPage(
-                                                duration:
-                                                    Duration(milliseconds: 500),
-                                                curve: Curves.ease,
-                                              );
-                                            },
-                                            borderSide: BorderSide(
-                                                color: Color(0xFFADADAD),
-                                                width: 1.4),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 15.0,
-                                              ),
-                                              child: Text(
-                                                'Back',
-                                                style: GoogleFonts.lato(
-                                                  textStyle: TextStyle(
-                                                    fontWeight: FontWeight.w900,
-                                                    fontSize: 16,
-                                                    color: UiColors.color3,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: screenWidth(context, 0.1),
-                                        ),
-                                        Expanded(
-                                          child: FlatButton(
-                                            onPressed: () {
-                                              if (pageTracker.currentPage !=
-                                                  2) {
-                                                OnboardingController
-                                                    .pageController
-                                                    .nextPage(
-                                                  duration: Duration(
-                                                      milliseconds: 500),
-                                                  curve: Curves.ease,
-                                                );
-                                              } else {
-                                                _onboardingController
-                                                    .validatePageViewLastPage(
-                                                  locationController.latitude,
-                                                  locationController.longitude,
-                                                );
-                                              }
-                                            },
-                                            color: Color(0xffDEDEDE),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
-                                            ),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 15.0,
-                                              ),
-                                              child: Text(
-                                                pageTracker.currentPage == 2
-                                                    ? 'Go'
-                                                    : 'Next',
-                                                style: GoogleFonts.lato(
-                                                  textStyle: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w900,
-                                                      fontSize: 16),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                      vertical: 15.0,
+                                      horizontal: 25,
+                                    ),
+                                    child: Text(
+                                      'Next',
+                                      style: GoogleFonts.lato(
+                                        textStyle: TextStyle(
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 16),
+                                      ),
                                     ),
                                   ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-            ),
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 35.0, horizontal: 60),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: OutlineButton(
+                                        onPressed: () {
+                                          OnboardingController.pageController
+                                              .previousPage(
+                                            duration:
+                                                Duration(milliseconds: 500),
+                                            curve: Curves.ease,
+                                          );
+                                        },
+                                        borderSide: BorderSide(
+                                            color: Color(0xFFADADAD),
+                                            width: 1.4),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 15.0,
+                                          ),
+                                          child: Text(
+                                            'Back',
+                                            style: GoogleFonts.lato(
+                                              textStyle: TextStyle(
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 16,
+                                                color: UiColors.color3,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: screenWidth(context, 0.1),
+                                    ),
+                                    Expanded(
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          if (pageTracker.currentPage != 2) {
+                                            OnboardingController.pageController
+                                                .nextPage(
+                                              duration:
+                                                  Duration(milliseconds: 500),
+                                              curve: Curves.ease,
+                                            );
+                                          } else {
+                                            _onboardingController
+                                                .validatePageViewLastPage();
+                                          }
+                                        },
+                                        color: Color(0xffDEDEDE),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 15.0,
+                                          ),
+                                          child: Text(
+                                            pageTracker.currentPage == 2
+                                                ? 'Go'
+                                                : 'Next',
+                                            style: GoogleFonts.lato(
+                                              textStyle: TextStyle(
+                                                  fontWeight: FontWeight.w900,
+                                                  fontSize: 16),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                      ],
+                    ),
+                  ),
+                )),
           ),
         );
       }),

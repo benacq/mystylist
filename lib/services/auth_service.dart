@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_stylist/controllers/auth_controller.dart';
 import 'package:my_stylist/screens/customers/customer_navigation.dart';
+import 'package:my_stylist/screens/landing/landing.dart';
 import 'package:my_stylist/screens/onboarding/onboarding.dart';
 import 'package:my_stylist/screens/stylist/stylist_navigation.dart';
 import '../utils/message_consts.dart' as Constants;
@@ -107,6 +108,8 @@ class AuthService {
         });
       }).timeout(new Duration(seconds: Constants.TIMEOUT_SECS));
     } on TimeoutException catch (e) {
+      _authController.setIsLoading = false;
+      _authController.update();
       print("::::: ${e.message} ");
       messageSnackbar(
           title: Constants.TIMEOUT_TITLE, message: Constants.TIMEOUT_MSG);
@@ -231,5 +234,9 @@ class AuthService {
           );
       }
     });
+  }
+
+  static void signOut() {
+    _firebaseAuth.signOut().then((value) => Get.offAll(Landing()));
   }
 }

@@ -19,9 +19,6 @@ import '../../../utils/message_consts.dart' as Constants;
 import 'package:my_stylist/utils/responsive.dart';
 
 class OnboardingPageView extends StatefulWidget {
-  final SharedPreferences prefs;
-  OnboardingPageView({this.prefs});
-
   @override
   _OnboardingPageViewState createState() => _OnboardingPageViewState();
 }
@@ -31,7 +28,7 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
       Get.put(OnboardingController());
 
   String selectedRegion = 'Greater Accra';
-  List<DropdownMenuItem> getDRopDownItems() {
+  List<DropdownMenuItem> get getDRopDownItems {
     List<DropdownMenuItem<String>> dropdownItems = [];
     for (String region in regionList) {
       var newItem = DropdownMenuItem(child: Text(region), value: region);
@@ -82,8 +79,10 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                     key: OnboardingController.pv1FormKey,
                     child: TextFormField(
                       style: TextStyle(color: UiColors.color3),
-                      onChanged: (fullName) => widget.prefs
-                          .setString(Constants.PREF_KEY_FULLNAME, fullName),
+                      onChanged: null
+                      // (fullName) => pageTracker.preferences
+                      //     .setString(Constants.PREF_KEY_FULLNAME, fullName)
+                      ,
                       initialValue: pageTracker.userFullName,
                       validator: (name) {
                         if (name.isEmpty) {
@@ -130,11 +129,8 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                           child: DropdownButtonFormField(
                             style: TextStyle(color: UiColors.color3),
                             value: pageTracker.accountType,
-                            onChanged: (accountType) {
-                              widget.prefs.setString(
-                                  Constants.PREF_KEY_ACC_TYPE, accountType);
-                              pageTracker.setAccountType = accountType;
-                            },
+                            onChanged: (accountType) =>
+                                pageTracker.setAccountType = accountType,
                             items: _accountTypes.map<DropdownMenuItem>((value) {
                               return DropdownMenuItem(
                                 value: value,
@@ -156,14 +152,10 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                           ),
                           child: DropdownButtonFormField(
                             style: TextStyle(color: UiColors.color3),
-                            value: selectedRegion,
-                            items: getDRopDownItems(),
-                            onChanged: (region) {
-                              widget.prefs
-                                  .setString(Constants.PREF_KEY_REGION, region);
-                            },
-                            onSaved: (region) => _onboardingController
-                                .setRegion = selectedRegion,
+                            value: pageTracker.region,
+                            items: getDRopDownItems,
+                            onChanged: (region) =>
+                                pageTracker.setRegion = region,
                             decoration:
                                 textInputDecoration(hint: 'Select a region.'),
                           ),
@@ -176,7 +168,7 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
             ),
             (pageTracker.accountType == _accountTypes[1])
                 ? Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 50.0),
+                    padding: const EdgeInsets.only(top: 50.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -198,11 +190,13 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: (custContact) =>
-                                    widget.prefs.setString(
-                                  Constants.PREF_KEY_CUST_CONTACT,
-                                  custContact,
-                                ),
+                                onChanged: null
+                                //  (custContact) =>
+                                //     widget.prefs.setString(
+                                //   Constants.PREF_KEY_CUST_CONTACT,
+                                //   custContact,
+                                // )
+                                ,
                                 initialValue: pageTracker.customerContact,
                                 onSaved: (customerContact) =>
                                     _onboardingController.setCustomerContact =
@@ -221,9 +215,11 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: (custLocation) => widget.prefs
-                                    .setString(Constants.PREF_KEY_CUST_LOCATION,
-                                        custLocation),
+                                onChanged: null
+                                // (custLocation) => widget.prefs
+                                //     .setString(Constants.PREF_KEY_CUST_LOCATION,
+                                //         custLocation)
+                                ,
                                 initialValue: pageTracker.customerLocation,
                                 onSaved: (customerLocation) =>
                                     _onboardingController.setCustomerLocation =
@@ -239,7 +235,7 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                     ),
                   )
                 : Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 50.0),
+                    padding: const EdgeInsets.only(top: 50.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -261,9 +257,11 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: (businessName) => widget.prefs
-                                    .setString(Constants.PREF_KEY_BUSS_NAME,
-                                        businessName),
+                                onChanged: null
+                                // (businessName) => widget.prefs
+                                //     .setString(Constants.PREF_KEY_BUSS_NAME,
+                                //         businessName)
+                                ,
                                 initialValue: pageTracker.businessName,
                                 validator: (businessName) =>
                                     businessName.isEmpty
@@ -282,9 +280,11 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: (businessContact) => widget.prefs
-                                    .setString(Constants.PREF_KEY_BUSS_CONTACT,
-                                        businessContact),
+                                onChanged: null
+                                // (businessContact) => widget.prefs
+                                //     .setString(Constants.PREF_KEY_BUSS_CONTACT,
+                                //         businessContact)
+                                ,
                                 initialValue: pageTracker.businessContact,
                                 validator: (phone) =>
                                     ValidationService.validatePhone(phone),
@@ -303,8 +303,9 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: (location) => widget.prefs.setString(
-                                    Constants.PREF_KEY_BUSS_LOCATION, location),
+                                onChanged: null,
+                                // (location) => widget.prefs.setString(
+                                //     Constants.PREF_KEY_BUSS_LOCATION, location),
                                 initialValue: pageTracker.businessLocation,
                                 validator: (location) =>
                                     ValidationService.validateLocation(
@@ -316,19 +317,24 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                                   hint: 'Abrepo Junction',
                                 ),
                               ),
-                              SizedBox(height:5),
+                              SizedBox(height: 5),
                               Center(
                                 child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     TextButton(
-                                      onPressed: () {},
+                                      onPressed: () => _onboardingController
+                                          .onboardingService
+                                          .getImage(),
                                       child: Text(
                                         'Upload a banner',
                                         style: TextStyle(fontSize: 20),
                                       ),
                                     ),
-                                    Icon(FontAwesome.image, color: UiColors.color8,),
+                                    Icon(
+                                      FontAwesome.image,
+                                      color: UiColors.color8,
+                                    ),
                                   ],
                                 ),
                               ),

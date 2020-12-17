@@ -29,7 +29,6 @@ class _AccountState extends State<Account> {
           future: SharedController().getCustomerData,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              // return Center(child: Constants.LOADER);
               return Center(
                 child: LogoutButton(
                   logout: () => AuthController.signOut(),

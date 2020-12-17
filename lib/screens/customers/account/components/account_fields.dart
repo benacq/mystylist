@@ -3,7 +3,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_stylist/controllers/auth_controller.dart';
 import 'package:my_stylist/controllers/shared_controller.dart';
 import 'package:my_stylist/models/customer_model.dart';
 import 'package:my_stylist/screens/reusablecomponents/account_data.dart';

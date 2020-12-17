@@ -180,7 +180,8 @@ class StylistController extends GetxController {
         _images.forEach((imageFile) async {
           firebase_storage.TaskSnapshot taskSnapshot = await storage
               .ref()
-              .child("stylists/${serviceID}__${basename(imageFile.path)}")
+              .child(
+                  "stylists/services/${serviceID}__${basename(imageFile.path)}")
               .putFile(imageFile);
 
           taskSnapshot.ref.getDownloadURL().then((url) {

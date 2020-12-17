@@ -14,10 +14,10 @@ const String SUCCESS_MESSAGE = " You will be contacted by us very soon.";
 const String ACCOUNT_BUSINESS = "business";
 const String ACCOUNT_CUSTOMER = "customer";
 
-const int TIMEOUT_SECS = 14;
+const int TIMEOUT_SECS = 25;
 const String TIMEOUT_MSG =
-    "Please make sure you have a stable internet connection";
-const String TIMEOUT_TITLE = "REQUEST TIMEOUT";
+    "Please make ensure you have a stable internet connection";
+const String TIMEOUT_TITLE = "TIMEOUT";
 
 //FIREBASE
 const String AUTH_USER_NOT_FOUND_MSG =
@@ -33,7 +33,7 @@ const String MANY_REQUESTS_TITLE = "Too many requests";
 const String MANY_REQUESTS_CODE = "too-many-requests";
 
 const String AUTH_UNKNOWN_MSG =
-    "Something went wrong, ensure you have a stable connection and try again";
+    "Something went wrong, please ensure you have a stable connection and try again";
 const String AUTH_UNKNOWN_TITLE = "Something went wrong";
 const String AUTH_UNKNOWN_CODE = "unknown";
 

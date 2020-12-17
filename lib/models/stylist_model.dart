@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:my_stylist/models/user_model.dart';
 
-class StylistModel {
+class StylistModel extends UserModel {
   String businessName;
   String ownerFullName;
   String email;

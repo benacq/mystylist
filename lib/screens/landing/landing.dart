@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:my_stylist/controllers/auth_controller.dart';
-import 'package:my_stylist/screens/customers/customer_navigation.dart';
 import 'package:my_stylist/screens/landing/components/l_body.dart';
-import 'package:my_stylist/screens/onboarding/onboarding.dart';
-import 'package:my_stylist/screens/stylist/stylist_navigation.dart';
 import '../../utils/message_consts.dart' as Constants;
 
 class Landing extends GetWidget<AuthController> {
@@ -30,7 +27,7 @@ class Landing extends GetWidget<AuthController> {
           : SafeArea(
               child: FutureBuilder<dynamic>(
                   //Check if user is stylist, customer or yet to fill onboarding and redirect accordingly
-                  future: controller.isOnboardingComplete(),
+                  future: controller.getService.checkOnboardingStatus(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Scaffold(
@@ -47,20 +44,10 @@ class Landing extends GetWidget<AuthController> {
                         ),
                       );
                     } else {
-                      return checkAccountType(snapshot.data);
+                      return snapshot.data;
                     }
                   }),
             );
     });
-  }
-
-  Widget checkAccountType(dynamic status) {
-    if (status == Constants.ACCOUNT_BUSINESS) {
-      return StylistNavigation();
-    } else if (status == Constants.ACCOUNT_CUSTOMER) {
-      return CustomerNavigation();
-    } else {
-      return OnboardingScreen();
-    }
   }
 }
