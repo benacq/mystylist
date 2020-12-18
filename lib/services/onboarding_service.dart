@@ -89,9 +89,23 @@ class OnboardingService {
                   "region": _onboardingController.region,
                   "location": _onboardingController.customerLocation,
                 }).then((_) {
-                  _onboardingController.setIsLoading = false;
-                  _onboardingController.update();
-                  Get.offAll(CustomerNavigation());
+                  //Create new customer model and add to hive
+                  CustomerModel customerModel = new CustomerModel(
+                      fullName: _onboardingController.userFullName,
+                      email: _firebaseAuth.currentUser.email,
+                      contact: _onboardingController.customerContact,
+                      region: _onboardingController.region,
+                      location: _onboardingController.customerLocation,
+                      accountType: _onboardingController.accountType);
+                  saveToHive(Constants.CUSTOMER_BOX, customerModel).then((_) {
+                    _onboardingController.setIsLoading = false;
+                    _onboardingController.update();
+                    Get.offAll(CustomerNavigation());
+                  }).catchError((error) {
+                    _onboardingController.setIsLoading = false;
+                    _onboardingController.update();
+                    messageSnackbar(title: "Error", message: error.toString());
+                  });
                 }).catchError((error) {
                   _onboardingController.setIsLoading = false;
                   _onboardingController.update();
@@ -165,11 +179,16 @@ class OnboardingService {
     });
   }
 
-  saveToHive(String boxName, UserModel model) async {
-    await Hive.openBox(boxName).then((Box box) {
-      box
-          .put(_firebaseAuth.currentUser.uid, model)
-          .then((value) => {box.close()});
+  Future<Box> saveToHive(String boxName, UserModel model) async {
+    return await Hive.openBox(boxName).then((Box box) {
+      if (box.isEmpty) {
+        print('Customer added');
+        return box
+            .put(_firebaseAuth.currentUser.uid, model)
+            .then((value) => box);
+      }
+      Fluttertoast.showToast(msg: "Box empty or closed");
+      return null;
     });
   }
 }

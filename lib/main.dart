@@ -4,12 +4,14 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_stylist/controllers/bindings/auth_binding.dart';
+import 'package:my_stylist/models/customer_model.dart';
 import 'package:my_stylist/screens/landing/landing.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await Hive.initFlutter();
+  Hive.registerAdapter(CustomerModelAdapter());
   runApp(MyApp());
 }
 

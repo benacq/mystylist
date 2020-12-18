@@ -13,7 +13,7 @@ import 'package:my_stylist/screens/signin/sign_in.dart';
 class AuthController extends GetxController {
   static final GlobalKey<FormState> signInFormKey = GlobalKey<FormState>();
   static final GlobalKey<FormState> signUpFormKey = GlobalKey<FormState>();
-  static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  static final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection("Users");
 
@@ -34,7 +34,7 @@ class AuthController extends GetxController {
 
   @override
   void onInit() {
-    _firebaseUser.bindStream(_firebaseAuth.authStateChanges());
+    _firebaseUser.bindStream(firebaseAuth.authStateChanges());
     super.onInit();
   }
 
@@ -61,7 +61,7 @@ class AuthController extends GetxController {
 
   Future<dynamic> isOnboardingComplete() async {
     return userCollection
-        .doc(_firebaseAuth.currentUser.uid)
+        .doc(firebaseAuth.currentUser.uid)
         .get()
         .then((document) {
       if (document.data().containsKey("account_type")) {
@@ -105,6 +105,6 @@ class AuthController extends GetxController {
   }
 
   static void signOut() {
-    _firebaseAuth.signOut().then((value) => Get.offAll(Landing()));
+    firebaseAuth.signOut().then((value) => Get.offAll(Landing()));
   }
 }

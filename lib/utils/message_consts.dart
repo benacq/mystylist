@@ -8,9 +8,12 @@ const LOADER = SpinKitFadingCircle(
   size: 45.0,
 );
 
+//HIVE BOXES
+const String CUSTOMER_BOX = "customerBox";
+const String STYLIST_BOX = "stylistBox";
+
 //APP CORE
 const String SUCCESS_MESSAGE = " You will be contacted by us very soon.";
-
 const String ACCOUNT_BUSINESS = "business";
 const String ACCOUNT_CUSTOMER = "customer";
 

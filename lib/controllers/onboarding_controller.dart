@@ -8,12 +8,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/message_consts.dart' as Constants;
 
 class OnboardingController extends GetxController {
-  static final GlobalKey<FormState> pv1FormKey = GlobalKey<FormState>();
-  static final GlobalKey<FormState> pv2FormKey = GlobalKey<FormState>();
+  static GlobalKey<FormState> pv1FormKey = GlobalKey<FormState>();
+  static GlobalKey<FormState> pv2FormKey = GlobalKey<FormState>();
 
   OnboardingService onboardingService = new OnboardingService();
 
-  static final PageController pageController = PageController(initialPage: 0);
+  static PageController pageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
   bool _isLoading = false;
@@ -116,33 +116,33 @@ class OnboardingController extends GetxController {
     return;
   }
 
-  void setPreferenceValues() {
-    if (_prefs != null) {
-      switch (_currentPage) {
-        case 0:
-          _userFullName = _prefs.getString(Constants.PREF_KEY_FULLNAME);
-          break;
-        case 1:
-          _accountType = _prefs.getString(Constants.PREF_KEY_ACC_TYPE);
-          break;
-        case 2:
-          pv2FormKey.currentState.reset();
-          if (_accountType == "I am a Customer") {
-            _customerContact =
-                _prefs.getString(Constants.PREF_KEY_CUST_CONTACT);
-            _customerLocation =
-                _prefs.getString(Constants.PREF_KEY_CUST_LOCATION);
-          } else if (_accountType == "I am a Beautician") {
-            _businessName = _prefs.getString(Constants.PREF_KEY_BUSS_NAME);
-            _businessContact =
-                _prefs.getString(Constants.PREF_KEY_BUSS_CONTACT);
-            _businessLocation =
-                _prefs.getString(Constants.PREF_KEY_BUSS_LOCATION);
-          }
-          break;
-      }
-    }
-  }
+  // void setPreferenceValues() {
+  //   if (_prefs != null) {
+  //     switch (_currentPage) {
+  //       case 0:
+  //         _userFullName = _prefs.getString(Constants.PREF_KEY_FULLNAME);
+  //         break;
+  //       case 1:
+  //         _accountType = _prefs.getString(Constants.PREF_KEY_ACC_TYPE);
+  //         break;
+  //       case 2:
+  //         pv2FormKey.currentState.reset();
+  //         if (_accountType == "I am a Customer") {
+  //           _customerContact =
+  //               _prefs.getString(Constants.PREF_KEY_CUST_CONTACT);
+  //           _customerLocation =
+  //               _prefs.getString(Constants.PREF_KEY_CUST_LOCATION);
+  //         } else if (_accountType == "I am a Beautician") {
+  //           _businessName = _prefs.getString(Constants.PREF_KEY_BUSS_NAME);
+  //           _businessContact =
+  //               _prefs.getString(Constants.PREF_KEY_BUSS_CONTACT);
+  //           _businessLocation =
+  //               _prefs.getString(Constants.PREF_KEY_BUSS_LOCATION);
+  //         }
+  //         break;
+  //     }
+  //   }
+  // }
 
   void removePreferences() {
     if (_prefs != null) {

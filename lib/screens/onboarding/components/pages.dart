@@ -79,10 +79,10 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                     key: OnboardingController.pv1FormKey,
                     child: TextFormField(
                       style: TextStyle(color: UiColors.color3),
-                      onChanged: null
+                      // onChanged: null
                       // (fullName) => pageTracker.preferences
                       //     .setString(Constants.PREF_KEY_FULLNAME, fullName)
-                      ,
+
                       initialValue: pageTracker.userFullName,
                       validator: (name) {
                         if (name.isEmpty) {
@@ -190,13 +190,13 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: null
+                                // onChanged: null
                                 //  (custContact) =>
                                 //     widget.prefs.setString(
                                 //   Constants.PREF_KEY_CUST_CONTACT,
                                 //   custContact,
                                 // )
-                                ,
+
                                 initialValue: pageTracker.customerContact,
                                 onSaved: (customerContact) =>
                                     _onboardingController.setCustomerContact =
@@ -215,11 +215,11 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: null
+                                // onChanged: null
                                 // (custLocation) => widget.prefs
                                 //     .setString(Constants.PREF_KEY_CUST_LOCATION,
                                 //         custLocation)
-                                ,
+
                                 initialValue: pageTracker.customerLocation,
                                 onSaved: (customerLocation) =>
                                     _onboardingController.setCustomerLocation =
@@ -257,11 +257,11 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: null
+                                // onChanged: null
                                 // (businessName) => widget.prefs
                                 //     .setString(Constants.PREF_KEY_BUSS_NAME,
                                 //         businessName)
-                                ,
+
                                 initialValue: pageTracker.businessName,
                                 validator: (businessName) =>
                                     businessName.isEmpty
@@ -280,11 +280,11 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: null
+                                // onChanged: null
                                 // (businessContact) => widget.prefs
                                 //     .setString(Constants.PREF_KEY_BUSS_CONTACT,
                                 //         businessContact)
-                                ,
+
                                 initialValue: pageTracker.businessContact,
                                 validator: (phone) =>
                                     ValidationService.validatePhone(phone),
@@ -303,7 +303,7 @@ class _OnboardingPageViewState extends State<OnboardingPageView> {
                               LabelSeperator(),
                               TextFormField(
                                 style: TextStyle(color: UiColors.color3),
-                                onChanged: null,
+                                // onChanged: null,
                                 // (location) => widget.prefs.setString(
                                 //     Constants.PREF_KEY_BUSS_LOCATION, location),
                                 initialValue: pageTracker.businessLocation,
